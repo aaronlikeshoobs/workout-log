@@ -4,7 +4,8 @@
     "done": true
   },
   "1:m2": {
-    "weight": "120"
+    "weight": "120",
+    "done": true
   },
   "1:m3": {
     "weight": "80"
