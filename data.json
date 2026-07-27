@@ -8,6 +8,7 @@
     "done": true
   },
   "1:m3": {
-    "weight": "80"
+    "weight": "80",
+    "done": true
   }
 }
