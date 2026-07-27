@@ -8,22 +8,24 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-title" content="Training Log" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="theme-color" content="#1C1B19" />
+<meta name="theme-color" content="#0D1110" />
 <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { overscroll-behavior-y: contain; }
-  body { background: #1C1B19; color: #EDE8DF; font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; touch-action: manipulation; }
-  input[type="text"]:focus { outline: 2px solid #E85D2B; outline-offset: 1px; }
-  button:focus-visible { outline: 2px solid #E85D2B; outline-offset: 2px; }
+  body { background: #0D1110; color: #EAEFEC; font-family: 'Public Sans', -apple-system, 'Helvetica Neue', Arial, sans-serif; touch-action: manipulation; }
+  input[type="text"]:focus { outline: 2px solid #4FD9AE; outline-offset: 1px; }
+  button:focus-visible { outline: 2px solid #4FD9AE; outline-offset: 2px; }
   button { font-family: inherit; user-select: none; }
   /* iOS Safari zooms in on any input with font-size under 16px — keep all inputs at 16px */
   input[type="text"] { font-size: 16px !important; }
 </style>
 </head>
 <body>
+<style>.hub-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#0D1110;border-bottom:1px solid #2A332F;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;position:sticky;top:0;z-index:50}.hub-nav a{color:#4FD9AE;text-decoration:none}.hub-nav .hub-nav-title{color:#8CA39A}</style>
+<div class="hub-nav"><a href="https://aaronlikeshoobs.github.io/fitness-hub/">&larr; Hub</a><span class="hub-nav-title">Workout Log</span></div>
 <div id="root"></div>
 <script type="text/babel" data-presets="react">
 
@@ -325,7 +327,7 @@ function WorkoutTracker() {
           </div>
           <div title="Save status">
             {saveState === "saving" && <span style={s.savingDot} />}
-            {saveState === "saved" && <span style={{ color: "#8FAE8B", fontSize: 18 }}>✓</span>}
+            {saveState === "saved" && <span style={{ color: "#6FCF97", fontSize: 18 }}>✓</span>}
             {saveState === "error" && <span style={{ color: "#C0503A", fontSize: 16 }}>⚠</span>}
           </div>
         </div>
@@ -369,13 +371,13 @@ function WorkoutTracker() {
                   <div style={{ textAlign: "left" }}>
                     <div style={s.dayTitleRow}>
                       <span style={s.dayTitle}>{day.title.toUpperCase()}</span>
-                      {day.title === todayName() && <span style={{ color: "#E85D2B" }}>●</span>}
+                      {day.title === todayName() && <span style={{ color: "#4FD9AE" }}>●</span>}
                     </div>
                     <div style={s.dayFocus}>{day.focus}</div>
                   </div>
                   <div style={s.dayHeaderRight}>
                     <span style={s.dayCount}>{dayDone}/{day.exercises.length}{dayVolume(day) > 0 ? ` · ${dayVolume(day).toLocaleString()} lb` : ""}</span>
-                    <span style={{ color: "#8A8378" }}>{isOpen ? "▲" : "▼"}</span>
+                    <span style={{ color: "#8CA39A" }}>{isOpen ? "▲" : "▼"}</span>
                   </div>
                 </button>
                 {isOpen && (
@@ -391,7 +393,7 @@ function WorkoutTracker() {
                         <div key={ex.id} style={s.exBlock}>
                           <div style={s.exRow}>
                             <button onClick={() => toggleDone(ex.id)} style={{ ...s.checkbox, ...(log.done ? s.checkboxDone : {}) }}>
-                              {log.done && <span style={{ color: "#1C1B19", fontWeight: 900 }}>✓</span>}
+                              {log.done && <span style={{ color: "#0D1110", fontWeight: 900 }}>✓</span>}
                             </button>
                             <div style={s.exInfo}>
                               <div style={{ ...s.exName, ...(log.done ? s.exNameDone : {}) }}>
@@ -411,11 +413,11 @@ function WorkoutTracker() {
                               )}
                               {isWeightExercise(ex) && (
                                 <button style={s.micBtn} onClick={() => voiceLogWeight(ex.id)} aria-label="Say the weight">
-                                  <span style={{ color: listeningId === ex.id ? "#E85D2B" : "#8A8378" }}>{listeningId === ex.id ? "●" : "🎤"}</span>
+                                  <span style={{ color: listeningId === ex.id ? "#4FD9AE" : "#8CA39A" }}>{listeningId === ex.id ? "●" : "🎤"}</span>
                                 </button>
                               )}
                               <button style={s.timerBtn} onClick={() => startTimer(ex.id)}>
-                                <span style={{ color: timerLeft ? "#E85D2B" : "#8A8378" }}>⏱</span>
+                                <span style={{ color: timerLeft ? "#4FD9AE" : "#8CA39A" }}>⏱</span>
                               </button>
                             </div>
                           </div>
@@ -463,15 +465,15 @@ function MiniChart({ title, data }) {
     <div style={s.chartCard}>
       <div style={s.chartTitle}>{title}</div>
       <svg viewBox={`0 0 ${w} ${h}`} width="100%" height={h}>
-        <polyline points={points.join(" ")} fill="none" stroke="#E85D2B" strokeWidth="2" />
+        <polyline points={points.join(" ")} fill="none" stroke="#4FD9AE" strokeWidth="2" />
         {data.map((d, i) => {
           const x = pad + (i / (data.length - 1 || 1)) * (w - pad * 2);
           const y = h - pad - ((d.weight - min) / range) * (h - pad * 2);
-          return <circle key={i} cx={x} cy={y} r="3" fill="#E85D2B" />;
+          return <circle key={i} cx={x} cy={y} r="3" fill="#4FD9AE" />;
         })}
         {data.map((d, i) => {
           const x = pad + (i / (data.length - 1 || 1)) * (w - pad * 2);
-          return <text key={i} x={x} y={h - 6} fontSize="10" fill="#8A8378" textAnchor="middle">{d.week}</text>;
+          return <text key={i} x={x} y={h - 6} fontSize="10" fill="#8CA39A" textAnchor="middle">{d.week}</text>;
         })}
       </svg>
     </div>
@@ -479,61 +481,61 @@ function MiniChart({ title, data }) {
 }
 
 const s = {
-  app: { minHeight: "100vh", background: "#1C1B19", color: "#EDE8DF", paddingBottom: 40 },
-  loadingScreen: { minHeight: "100vh", background: "#1C1B19", display: "flex", alignItems: "center", justifyContent: "center" },
-  loadingText: { color: "#8A8378", letterSpacing: "0.2em", fontSize: 12, fontFamily: "monospace" },
-  header: { padding: "calc(24px + env(safe-area-inset-top)) 18px 16px", borderBottom: "1px solid #333029", position: "sticky", top: 0, background: "#1C1B19", zIndex: 10 },
+  app: { minHeight: "100vh", background: "#0D1110", color: "#EAEFEC", paddingBottom: 40 },
+  loadingScreen: { minHeight: "100vh", background: "#0D1110", display: "flex", alignItems: "center", justifyContent: "center" },
+  loadingText: { color: "#8CA39A", letterSpacing: "0.2em", fontSize: 12, fontFamily: "'IBM Plex Mono', monospace" },
+  header: { padding: "calc(24px + env(safe-area-inset-top)) 18px 16px", borderBottom: "1px solid #2A332F", position: "sticky", top: 0, background: "#0D1110", zIndex: 10 },
   headerTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 },
-  eyebrow: { fontFamily: "monospace", fontSize: 11, letterSpacing: "0.15em", color: "#E85D2B", marginBottom: 4 },
+  eyebrow: { fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, letterSpacing: "0.15em", color: "#4FD9AE", marginBottom: 4 },
   h1: { fontSize: 26, fontWeight: 800, margin: 0, letterSpacing: "-0.02em" },
-  savingDot: { display: "inline-block", width: 8, height: 8, borderRadius: "50%", background: "#8A8378" },
+  savingDot: { display: "inline-block", width: 8, height: 8, borderRadius: "50%", background: "#8CA39A" },
   errorBanner: { background: "#3A1E1A", border: "1px solid #6B3A30", color: "#E8A090", fontSize: 11, padding: "8px 10px", borderRadius: 6, marginBottom: 10 },
   tabRow: { display: "flex", gap: 6, marginBottom: 12 },
-  tabBtn: { flex: 1, background: "transparent", border: "1px solid #3E3A32", color: "#8A8378", borderRadius: 6, padding: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" },
-  tabBtnActive: { background: "#2E2A22", borderColor: "#E85D2B", color: "#EDE8DF" },
+  tabBtn: { flex: 1, background: "transparent", border: "1px solid #333F3A", color: "#8CA39A", borderRadius: 6, padding: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" },
+  tabBtnActive: { background: "#1E2624", borderColor: "#4FD9AE", color: "#EAEFEC" },
   weekPicker: { display: "flex", gap: 6, marginBottom: 10 },
-  weekBtn: { background: "transparent", border: "1px solid #3E3A32", color: "#8A8378", borderRadius: 4, padding: "6px 10px", fontSize: 12, fontFamily: "monospace", cursor: "pointer" },
-  weekBtnActive: { background: "#E85D2B", borderColor: "#E85D2B", color: "#1C1B19", fontWeight: 700 },
+  weekBtn: { background: "transparent", border: "1px solid #333F3A", color: "#8CA39A", borderRadius: 4, padding: "6px 10px", fontSize: 12, fontFamily: "'IBM Plex Mono', monospace", cursor: "pointer" },
+  weekBtnActive: { background: "#4FD9AE", borderColor: "#4FD9AE", color: "#0D1110", fontWeight: 700 },
   progressRow: { display: "flex", alignItems: "center", gap: 10 },
-  progressBarTrack: { flex: 1, height: 6, background: "#333029", borderRadius: 3, overflow: "hidden" },
-  progressBarFill: { height: "100%", background: "#E85D2B" },
-  progressLabel: { fontFamily: "monospace", fontSize: 12, color: "#8A8378", minWidth: 36, textAlign: "right" },
+  progressBarTrack: { flex: 1, height: 6, background: "#2A332F", borderRadius: 3, overflow: "hidden" },
+  progressBarFill: { height: "100%", background: "#4FD9AE" },
+  progressLabel: { fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: "#8CA39A", minWidth: 36, textAlign: "right" },
   main: { padding: "16px 18px", display: "flex", flexDirection: "column", gap: 10 },
-  dayCard: { background: "#242220", border: "1px solid #333029", borderRadius: 8, overflow: "hidden" },
+  dayCard: { background: "#161C1A", border: "1px solid #2A332F", borderRadius: 8, overflow: "hidden" },
   dayHeader: { width: "100%", background: "transparent", border: "none", padding: "14px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", color: "inherit" },
   dayTitleRow: { display: "flex", alignItems: "center", gap: 6 },
   dayTitle: { fontSize: 13, fontWeight: 700, letterSpacing: "0.08em" },
-  dayFocus: { fontSize: 12, color: "#8A8378", marginTop: 2 },
+  dayFocus: { fontSize: 12, color: "#8CA39A", marginTop: 2 },
   dayHeaderRight: { display: "flex", alignItems: "center", gap: 10 },
-  dayCount: { fontFamily: "monospace", fontSize: 12, color: "#8A8378" },
+  dayCount: { fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: "#8CA39A" },
   dayBody: { padding: "0 16px 14px", display: "flex", flexDirection: "column", gap: 10 },
-  noteBox: { background: "#2E2A22", border: "1px solid #4A3F2A", color: "#D9B98A", fontSize: 12, padding: "8px 10px", borderRadius: 6 },
+  noteBox: { background: "#1E2624", border: "1px solid #4A3F2A", color: "#D9B98A", fontSize: 12, padding: "8px 10px", borderRadius: 6 },
   exBlock: { paddingTop: 10, borderTop: "1px solid #2E2B26" },
   exRow: { display: "flex", alignItems: "flex-start", gap: 10 },
   checkbox: { width: 30, height: 30, minWidth: 30, borderRadius: 6, border: "1.5px solid #4A453B", background: "transparent", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", padding: 0, marginTop: 0 },
-  checkboxDone: { background: "#E85D2B", borderColor: "#E85D2B" },
+  checkboxDone: { background: "#4FD9AE", borderColor: "#4FD9AE" },
   exInfo: { flex: 1, minWidth: 0 },
   exName: { fontSize: 14, fontWeight: 600, display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" },
   exNameDone: { color: "#7A756C", textDecoration: "line-through" },
   prBadge: { display: "inline-flex", alignItems: "center", gap: 3, background: "#3A2A18", color: "#E8A84B", fontSize: 10, fontWeight: 700, padding: "2px 6px", borderRadius: 4 },
   exMeta: { display: "flex", gap: 8, marginTop: 2 },
-  exTarget: { fontFamily: "monospace", fontSize: 11, color: "#8A8378" },
-  exGoal: { fontSize: 11, color: "#E85D2B" },
-  suggestionText: { fontSize: 11, color: "#8FAE8B", marginTop: 3 },
+  exTarget: { fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "#8CA39A" },
+  exGoal: { fontSize: 11, color: "#4FD9AE" },
+  suggestionText: { fontSize: 11, color: "#6FCF97", marginTop: 3 },
   suggestionSub: { color: "#6B7A68" },
   exActions: { display: "flex", flexDirection: "column", alignItems: "center", gap: 6 },
-  weightInput: { width: 64, background: "#1C1B19", border: "1px solid #3E3A32", borderRadius: 6, color: "#EDE8DF", fontSize: 16, fontFamily: "monospace", padding: "8px", textAlign: "center" },
-  volumeLabel: { fontFamily: "monospace", fontSize: 11, color: "#8A8378", marginTop: 8 },
-  completeBanner: { background: "#1E2E22", border: "1px solid #3A5A40", color: "#8FAE8B", fontSize: 12, padding: "8px 10px", borderRadius: 6, marginTop: 10 },
+  weightInput: { width: 64, background: "#0D1110", border: "1px solid #333F3A", borderRadius: 6, color: "#EAEFEC", fontSize: 16, fontFamily: "'IBM Plex Mono', monospace", padding: "8px", textAlign: "center" },
+  volumeLabel: { fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "#8CA39A", marginTop: 8 },
+  completeBanner: { background: "#1E2E22", border: "1px solid #3A5A40", color: "#6FCF97", fontSize: 12, padding: "8px 10px", borderRadius: 6, marginTop: 10 },
   micBtn: { background: "transparent", border: "none", cursor: "pointer", padding: 10, fontSize: 15, minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" },
   timerBtn: { background: "transparent", border: "none", cursor: "pointer", padding: 10, fontSize: 16, minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" },
-  timerRow: { fontFamily: "monospace", fontSize: 12, color: "#E85D2B", marginTop: 6, marginLeft: 34 },
+  timerRow: { fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: "#4FD9AE", marginTop: 6, marginLeft: 34 },
   emptyState: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 20px", gap: 12, textAlign: "center" },
-  emptyText: { fontSize: 13, color: "#8A8378", maxWidth: 240 },
-  chartCard: { background: "#242220", border: "1px solid #333029", borderRadius: 8, padding: 14 },
+  emptyText: { fontSize: 13, color: "#8CA39A", maxWidth: 240 },
+  chartCard: { background: "#161C1A", border: "1px solid #2A332F", borderRadius: 8, padding: 14 },
   chartTitle: { fontSize: 13, fontWeight: 700, marginBottom: 6 },
   footer: { textAlign: "center", padding: "10px 18px calc(24px + env(safe-area-inset-bottom)) 18px", fontSize: 11, color: "#5C584F" },
-  saveIndicator: { fontFamily: "monospace" },
+  saveIndicator: { fontFamily: "'IBM Plex Mono', monospace" },
 };
 
 ReactDOM.createRoot(document.getElementById("root")).render(<WorkoutTracker />);
