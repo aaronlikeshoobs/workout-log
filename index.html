@@ -303,7 +303,14 @@ function WorkoutTracker() {
       const topWeight = nums.length ? Math.max(...nums) : null;
       const sr = parseSetsReps(ex.target);
       const complete = sr ? sets.length >= sr.sets : false;
-      return { week: w, sets, topWeight, effort: (log && log.effort) || null, pain: !!(log && log.pain), complete };
+      // Did the sets that count toward this week's target actually hit the prescribed reps?
+      // This is a factual check on the numbers logged, independent of the effort label —
+      // someone can mark a set "Solid" and still have come up short on reps.
+      let repsMet = null;
+      if (sr && sets.length >= sr.sets) {
+        repsMet = sets.slice(0, sr.sets).every((st) => (Number(st.reps) || 0) >= sr.reps);
+      }
+      return { week: w, sets, topWeight, effort: (log && log.effort) || null, pain: !!(log && log.pain), complete, repsMet };
     }).filter(Boolean);
 
   const suggestionFor = (exId) => {
@@ -315,7 +322,16 @@ function WorkoutTracker() {
     if (last.pain) { suggested = last.topWeight; reason = "pain flagged last time \u2014 hold, consider a substitution"; }
     else if (last.effort === "missed") { suggested = Math.max(0, last.topWeight - bump); reason = "missed reps \u2014 dial back"; }
     else if (last.effort === "grinding") { suggested = last.topWeight; reason = "was grinding \u2014 repeat"; }
-    else if (last.effort === "solid" || last.effort === "easy") { suggested = last.topWeight + bump; reason = "ready to add weight"; }
+    else if (last.effort === "solid" || last.effort === "easy") {
+      if (last.repsMet === false) {
+        // Effort said solid, but the logged reps don't back that up — trust the numbers.
+        suggested = last.topWeight;
+        reason = "reps came up short of target \u2014 repeat before adding weight";
+      } else {
+        suggested = last.topWeight + bump;
+        reason = "ready to add weight";
+      }
+    }
     else { suggested = last.topWeight; reason = "repeat"; }
     return { suggested, lastWeight: last.topWeight, effort: last.effort, pain: last.pain, reason };
   };
@@ -396,6 +412,17 @@ function WorkoutTracker() {
   const totalExercises = program.days.reduce((n, d) => n + countable(d).length, 0);
   const doneCount = program.days.reduce((n, d) => n + countable(d).filter((e) => isExerciseComplete(week, e)).length, 0);
   const weekComplete = totalExercises > 0 && doneCount === totalExercises;
+
+  // Today's scheduled session, surfaced prominently — the app's main job during a session
+  // is logging the next set with as little friction as possible.
+  const todayDay = program.days.find((d) => d.title === todayName());
+  const todayCountable = todayDay ? countable(todayDay) : [];
+  const todayDone = todayCountable.filter((e) => isExerciseComplete(week, e)).length;
+  const todayStarted = todayCountable.some((e) => {
+    const log = logs[`${week}:${e.id}`];
+    return log && ((log.sets && log.sets.length > 0) || log.done);
+  });
+  const todayPending = todayDay && todayCountable.length > 0 && todayDone < todayCountable.length;
 
   // Real weekly volume: actual logged sets (reps x weight), not prescribed sets x reps x one weight.
   const dayVolume = (day) => day.exercises.reduce((s, ex) => {
@@ -655,6 +682,19 @@ function WorkoutTracker() {
         )}
       </header>
 
+      {view === "log" && todayPending && (
+        <div style={s.heroCard}>
+          <div style={s.heroTop}>
+            <div style={s.heroLabel}>{todayStarted ? "IN PROGRESS" : "TODAY'S SESSION"}</div>
+            <div style={s.heroCount}>{todayDone}/{todayCountable.length}</div>
+          </div>
+          <div style={s.heroFocus}>{todayDay.focus}</div>
+          <button style={s.heroBtn} onClick={() => { setOpenDay(todayDay.title); setWorkoutSession({ dayTitle: todayDay.title, idx: 0 }); }}>
+            {todayStarted ? "\u25b6 Continue Workout" : "\u25b6 Start Workout"}
+          </button>
+        </div>
+      )}
+
       {view === "log" && (
         <main style={s.main}>
           {program.days.map((day) => {
@@ -824,6 +864,13 @@ const s = {
   sessionNoteInput: { width: "100%", background: "#0D1110", border: "1px solid #333F3A", borderRadius: 8, color: "#EAEFEC", fontSize: 13, padding: "10px 10px", minHeight: 40 },
 
   startBtn: { width: "100%", background: "transparent", border: "1px solid #4FD9AE", color: "#4FD9AE", borderRadius: 8, padding: "12px 8px", fontSize: 13, fontWeight: 700, cursor: "pointer", minHeight: 44, marginBottom: 14 },
+
+  heroCard: { margin: "0 18px 14px", background: "linear-gradient(180deg, #1B2320, #161C1A)", border: "1px solid #4FD9AE", borderRadius: 14, padding: "16px 18px" },
+  heroTop: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 },
+  heroLabel: { fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, letterSpacing: "0.1em", color: "#4FD9AE", fontWeight: 700 },
+  heroCount: { fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, color: "#8CA39A" },
+  heroFocus: { fontSize: 16, fontWeight: 700, marginBottom: 14 },
+  heroBtn: { width: "100%", background: "#4FD9AE", border: "none", color: "#0D1110", borderRadius: 10, padding: "15px 8px", fontSize: 15, fontWeight: 800, cursor: "pointer", minHeight: 50 },
 
   sessionHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "calc(16px + env(safe-area-inset-top)) 18px 8px" },
   sessionExit: { background: "transparent", border: "none", color: "#8CA39A", fontSize: 20, cursor: "pointer", width: 32, height: 32 },
