@@ -2,7 +2,7 @@
   "1:m1": {
     "sets": [
       {
-        "weight": "",
+        "weight": 100,
         "reps": 6
       },
       {
