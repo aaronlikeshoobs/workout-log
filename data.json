@@ -25,7 +25,7 @@
   "1:m2": {
     "sets": [
       {
-        "weight": 10,
+        "weight": "",
         "reps": 8
       },
       {
