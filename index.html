@@ -108,6 +108,17 @@ const EFFORT_OPTIONS = [
   ["missed", "❌ Missed"],
 ];
 
+const CATEGORY_META = {
+  main:      { icon: "🏋️", label: "Main" },
+  accessory: { icon: "🔧", label: "Accessory" },
+  rehab:     { icon: "🩹", label: "Rehab" },
+  cardio:    { icon: "🚴", label: "Cardio" },
+  mobility:  { icon: "🧘", label: "Mobility" },
+  rest:      { icon: "😴", label: "Rest" },
+};
+function categoryOf(ex) { return ex.category || (isWeightExercise(ex) ? "main" : "accessory"); }
+function sessionNoteKey(week, dayTitle) { return `session:${week}:${dayTitle}`; }
+
 function WorkoutTracker() {
   const [PROGRAM, setPROGRAM] = useState(null);
   const [programError, setProgramError] = useState(null);
@@ -120,6 +131,8 @@ function WorkoutTracker() {
   const [saveError, setSaveError] = useState(null);
   const [restTimers, setRestTimers] = useState({});
   const [editingSet, setEditingSet] = useState(null); // {exId, idx}
+  const [openNotes, setOpenNotes] = useState({}); // { [exId]: true }
+  const [workoutSession, setWorkoutSession] = useState(null); // { dayTitle, idx }
 
   const timerIntervalsRef = useRef({});
   const logsRef = useRef({});
@@ -238,6 +251,16 @@ function WorkoutTracker() {
   const toggleDone = (exId) => {
     mutateLog(exId, (cur) => ({ ...cur, done: !cur.done }));
   };
+  const setExerciseNote = (exId, note) => {
+    mutateLog(exId, (cur) => ({ ...cur, note }));
+  };
+  const updateSessionNote = (dayTitle, note) => {
+    const key = sessionNoteKey(week, dayTitle);
+    const next = { ...logsRef.current, [key]: { note } };
+    logsRef.current = next;
+    setLogs(next);
+    saveNow(next);
+  };
 
   const handleAddSet = (ex) => {
     const key = `${week}:${ex.id}`;
@@ -353,8 +376,9 @@ function WorkoutTracker() {
 
   const weeks = Object.keys(PROGRAM).map(Number).sort((a, b) => a - b);
   const program = PROGRAM[week];
-  const totalExercises = program.days.reduce((n, d) => n + d.exercises.length, 0);
-  const doneCount = program.days.reduce((n, d) => n + d.exercises.filter((e) => isExerciseComplete(week, e)).length, 0);
+  const countable = (day) => day.exercises.filter((e) => categoryOf(e) !== "rest");
+  const totalExercises = program.days.reduce((n, d) => n + countable(d).length, 0);
+  const doneCount = program.days.reduce((n, d) => n + countable(d).filter((e) => isExerciseComplete(week, e)).length, 0);
   const weekComplete = totalExercises > 0 && doneCount === totalExercises;
 
   // Real weekly volume: actual logged sets (reps x weight), not prescribed sets x reps x one weight.
@@ -365,6 +389,132 @@ function WorkoutTracker() {
     return s + sets.reduce((ss, st) => ss + (Number(st.reps) || 0) * (Number(st.weight) || 0), 0);
   }, 0);
   const weekVolume = program.days.reduce((sum, d) => sum + dayVolume(d), 0);
+
+  // Hard sets = sets actually logged on main lifts this week — a steadier signal than pounds moved.
+  const hardSets = program.days.reduce((n, d) => n + d.exercises.reduce((s, ex) => {
+    if (categoryOf(ex) !== "main") return s;
+    const log = logs[`${week}:${ex.id}`];
+    return s + ((log && log.sets) ? log.sets.length : 0);
+  }, 0), 0);
+
+  const renderExercise = (ex) => {
+    const key = `${week}:${ex.id}`;
+    const log = logs[key] || {};
+    const weighted = isWeightExercise(ex);
+    const pr = isPR(ex.id);
+    const timerLeft = restTimers[ex.id];
+    const cat = CATEGORY_META[categoryOf(ex)] || CATEGORY_META.accessory;
+    const noteOpen = !!openNotes[ex.id];
+    const noteBlock = (
+      <div style={s.noteWrap}>
+        <button style={s.noteToggle} onClick={() => setOpenNotes((p) => ({ ...p, [ex.id]: !p[ex.id] }))}>
+          {log.note ? "📝 note" : "+ note"}
+        </button>
+        {noteOpen && (
+          <input
+            type="text"
+            value={log.note || ""}
+            onChange={(e) => setExerciseNote(ex.id, e.target.value)}
+            placeholder="e.g. left knee felt off on the last set"
+            style={s.noteInput}
+          />
+        )}
+      </div>
+    );
+
+    if (!weighted) {
+      return (
+        <div key={ex.id} style={s.exBlock}>
+          <div style={s.exRow}>
+            <button onClick={() => toggleDone(ex.id)} style={{ ...s.checkbox, ...(log.done ? s.checkboxDone : {}) }}>
+              {log.done && <span style={{ color: "#0D1110", fontWeight: 900 }}>✓</span>}
+            </button>
+            <div style={s.exInfo}>
+              <div style={{ ...s.exName, ...(log.done ? s.exNameDone : {}) }}>
+                <span title={cat.label}>{cat.icon}</span> {ex.name}
+              </div>
+              <div style={s.exMeta}>
+                <span style={s.exTarget}>{ex.target}</span>
+                {ex.goal && ex.goal !== "n/a" && ex.goal !== "bodyweight" && <span style={s.exGoal}>goal: {ex.goal}</span>}
+              </div>
+            </div>
+            <button style={s.timerBtn} onClick={() => startTimer(ex.id)}>
+              <span style={{ color: timerLeft ? "#4FD9AE" : "#8CA39A" }}>⏱</span>
+            </button>
+          </div>
+          {noteBlock}
+          {timerLeft !== undefined && (
+            <div style={s.timerRow}>Rest: {Math.floor(timerLeft / 60)}:{String(timerLeft % 60).padStart(2, "0")}</div>
+          )}
+        </div>
+      );
+    }
+
+    const sets = log.sets || [];
+    const sr = parseSetsReps(ex.target);
+    const targetSets = sr ? sr.sets : null;
+    const suggestion = suggestionFor(ex.id);
+
+    return (
+      <div key={ex.id} style={s.exBlock}>
+        <div style={s.exInfo}>
+          <div style={s.exName}>
+            <span title={cat.label}>{cat.icon}</span> {ex.name}{pr && <span style={s.prBadge}>★ PR</span>}
+            <span style={s.exSetsCount}>{sets.length}{targetSets ? `/${targetSets}` : ""} sets</span>
+          </div>
+          <div style={s.exMeta}>
+            <span style={s.exTarget}>{ex.target}</span>
+            {ex.goal && ex.goal !== "n/a" && ex.goal !== "bodyweight" && <span style={s.exGoal}>{ex.goal}</span>}
+          </div>
+          {suggestion && (
+            <div style={s.suggestionText}>suggested: {suggestion.suggested} lb <span style={s.suggestionSub}>({suggestion.reason})</span></div>
+          )}
+
+          <div style={s.setChipRow}>
+            {sets.map((st, idx) => {
+              const isEditing = editingSet && editingSet.exId === ex.id && editingSet.idx === idx;
+              if (isEditing) {
+                return (
+                  <div key={idx} style={s.setEditRow}>
+                    <input type="text" inputMode="decimal" value={st.weight} onChange={(e) => updateSet(ex.id, idx, "weight", e.target.value)} style={s.setEditInput} placeholder="wt" />
+                    <span style={{ color: "#8CA39A" }}>×</span>
+                    <input type="text" inputMode="numeric" value={st.reps} onChange={(e) => updateSet(ex.id, idx, "reps", e.target.value)} style={s.setEditInput} placeholder="reps" />
+                    <button style={s.setChipBtn} onClick={() => setEditingSet(null)} aria-label="Done editing">✓</button>
+                    <button style={{ ...s.setChipBtn, color: "#FF6B6B" }} onClick={() => { deleteSet(ex.id, idx); setEditingSet(null); }} aria-label="Delete set">×</button>
+                  </div>
+                );
+              }
+              return (
+                <button key={idx} style={s.setChip} onClick={() => setEditingSet({ exId: ex.id, idx })}>
+                  {st.weight || "—"}×{st.reps || "—"}
+                </button>
+              );
+            })}
+            <button style={s.addSetBtn} onClick={() => handleAddSet(ex)}>+ Set</button>
+            <button style={s.micBtn} onClick={() => voiceLogWeight(ex)} aria-label="Say the weight to log a set">
+              <span style={{ color: listeningId === ex.id ? "#4FD9AE" : "#8CA39A" }}>{listeningId === ex.id ? "●" : "🎤"}</span>
+            </button>
+            <button style={s.timerBtn} onClick={() => startTimer(ex.id)}>
+              <span style={{ color: timerLeft ? "#4FD9AE" : "#8CA39A" }}>⏱</span>
+            </button>
+          </div>
+
+          {sets.length > 0 && (
+            <div style={s.effortRow}>
+              {EFFORT_OPTIONS.map(([val, label]) => (
+                <button key={val} style={{ ...s.effortBtn, ...(log.effort === val ? s.effortBtnActive : {}) }} onClick={() => setEffort(ex.id, val)}>{label}</button>
+              ))}
+              <button style={{ ...s.painBtn, ...(log.pain ? s.painBtnActive : {}) }} onClick={() => togglePain(ex.id)}>⚠️ Pain</button>
+            </div>
+          )}
+          {noteBlock}
+          {timerLeft !== undefined && (
+            <div style={s.timerRow}>Rest: {Math.floor(timerLeft / 60)}:{String(timerLeft % 60).padStart(2, "0")}</div>
+          )}
+        </div>
+      </div>
+    );
+  };
 
   const chartExercises = (() => {
     const seen = {};
@@ -379,6 +529,38 @@ function WorkoutTracker() {
       data: getExerciseHistory(e.id).filter((h) => h.topWeight !== null).map((h) => ({ week: `W${h.week}`, weight: h.topWeight })),
     })).filter((e) => e.data.length >= 2);
   })();
+
+  if (workoutSession) {
+    const sessDay = program.days.find((d) => d.title === workoutSession.dayTitle);
+    if (!sessDay) { setWorkoutSession(null); return null; }
+    const exList = sessDay.exercises;
+    const idx = Math.min(workoutSession.idx, exList.length - 1);
+    const ex = exList[idx];
+    const exDone = isExerciseComplete(week, ex);
+    return (
+      <div style={s.app}>
+        <div style={s.sessionHeader}>
+          <button style={s.sessionExit} onClick={() => setWorkoutSession(null)}>✕</button>
+          <div style={s.sessionProgress}>{idx + 1} / {exList.length}</div>
+          <div style={{ width: 32 }} />
+        </div>
+        <div style={s.sessionDayTitle}>{sessDay.title} · {sessDay.focus}</div>
+        <main style={{ ...s.main, paddingTop: 0 }}>
+          <div style={s.dayCard}>
+            <div style={{ padding: 16 }}>{renderExercise(ex)}</div>
+          </div>
+        </main>
+        <div style={s.sessionNav}>
+          <button style={s.sessionNavBtn} disabled={idx === 0} onClick={() => setWorkoutSession({ ...workoutSession, idx: idx - 1 })}>← Prev</button>
+          {idx < exList.length - 1 ? (
+            <button style={{ ...s.sessionNavBtn, ...s.sessionNavPrimary }} onClick={() => setWorkoutSession({ ...workoutSession, idx: idx + 1 })}>Next →</button>
+          ) : (
+            <button style={{ ...s.sessionNavBtn, ...s.sessionNavPrimary }} onClick={() => setWorkoutSession(null)}>{exDone ? "Finish ✓" : "Finish"}</button>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={s.app}>
@@ -415,7 +597,7 @@ function WorkoutTracker() {
               <div style={s.progressBarTrack}><div style={{ ...s.progressBarFill, width: `${totalExercises ? (doneCount / totalExercises) * 100 : 0}%` }} /></div>
               <span style={s.progressLabel}>{doneCount}/{totalExercises}</span>
             </div>
-            {weekVolume > 0 && <div style={s.volumeLabel}>{Math.round(weekVolume).toLocaleString()} lb actually moved this week</div>}
+            {(weekVolume > 0 || hardSets > 0) && <div style={s.volumeLabel}>{hardSets} hard set{hardSets===1?"":"s"} on main lifts{weekVolume > 0 ? ` \u00b7 ${Math.round(weekVolume).toLocaleString()} lb moved` : ""} this week</div>}
             {weekComplete && (
               <div style={s.completeBanner}>Week complete — message Claude for next week's plan.</div>
             )}
@@ -427,7 +609,9 @@ function WorkoutTracker() {
         <main style={s.main}>
           {program.days.map((day) => {
             const isOpen = openDay === day.title;
-            const dayDone = day.exercises.filter((e) => isExerciseComplete(week, e)).length;
+            const dayCountable = countable(day);
+            const dayDone = dayCountable.filter((e) => isExerciseComplete(week, e)).length;
+            const sessNote = (logs[sessionNoteKey(week, day.title)] || {}).note || "";
             return (
               <section key={day.title} style={s.dayCard}>
                 <button style={s.dayHeader} onClick={() => setOpenDay(isOpen ? null : day.title)}>
@@ -439,109 +623,30 @@ function WorkoutTracker() {
                     <div style={s.dayFocus}>{day.focus}</div>
                   </div>
                   <div style={s.dayHeaderRight}>
-                    <span style={s.dayCount}>{dayDone}/{day.exercises.length}{dayVolume(day) > 0 ? ` · ${Math.round(dayVolume(day)).toLocaleString()} lb` : ""}</span>
+                    <span style={s.dayCount}>
+                      {dayCountable.length === 0 ? "Flexible" : `${dayDone}/${dayCountable.length}`}
+                      {dayVolume(day) > 0 ? ` · ${Math.round(dayVolume(day)).toLocaleString()} lb` : ""}
+                    </span>
                     <span style={{ color: "#8CA39A" }}>{isOpen ? "▲" : "▼"}</span>
                   </div>
                 </button>
                 {isOpen && (
                   <div style={s.dayBody}>
                     {day.note && <div style={s.noteBox}>{day.note}</div>}
-                    {day.exercises.map((ex) => {
-                      const key = `${week}:${ex.id}`;
-                      const log = logs[key] || {};
-                      const weighted = isWeightExercise(ex);
-                      const pr = isPR(ex.id);
-                      const timerLeft = restTimers[ex.id];
-
-                      if (!weighted) {
-                        return (
-                          <div key={ex.id} style={s.exBlock}>
-                            <div style={s.exRow}>
-                              <button onClick={() => toggleDone(ex.id)} style={{ ...s.checkbox, ...(log.done ? s.checkboxDone : {}) }}>
-                                {log.done && <span style={{ color: "#0D1110", fontWeight: 900 }}>✓</span>}
-                              </button>
-                              <div style={s.exInfo}>
-                                <div style={{ ...s.exName, ...(log.done ? s.exNameDone : {}) }}>{ex.name}</div>
-                                <div style={s.exMeta}>
-                                  <span style={s.exTarget}>{ex.target}</span>
-                                  {ex.goal && ex.goal !== "n/a" && ex.goal !== "bodyweight" && <span style={s.exGoal}>goal: {ex.goal}</span>}
-                                </div>
-                              </div>
-                              <button style={s.timerBtn} onClick={() => startTimer(ex.id)}>
-                                <span style={{ color: timerLeft ? "#4FD9AE" : "#8CA39A" }}>⏱</span>
-                              </button>
-                            </div>
-                            {timerLeft !== undefined && (
-                              <div style={s.timerRow}>Rest: {Math.floor(timerLeft / 60)}:{String(timerLeft % 60).padStart(2, "0")}</div>
-                            )}
-                          </div>
-                        );
-                      }
-
-                      const sets = log.sets || [];
-                      const sr = parseSetsReps(ex.target);
-                      const targetSets = sr ? sr.sets : null;
-                      const suggestion = suggestionFor(ex.id);
-
-                      return (
-                        <div key={ex.id} style={s.exBlock}>
-                          <div style={s.exInfo}>
-                            <div style={s.exName}>
-                              {ex.name}{pr && <span style={s.prBadge}>★ PR</span>}
-                              <span style={s.exSetsCount}>{sets.length}{targetSets ? `/${targetSets}` : ""} sets</span>
-                            </div>
-                            <div style={s.exMeta}>
-                              <span style={s.exTarget}>{ex.target}</span>
-                              {ex.goal && ex.goal !== "n/a" && ex.goal !== "bodyweight" && <span style={s.exGoal}>{ex.goal}</span>}
-                            </div>
-                            {suggestion && (
-                              <div style={s.suggestionText}>suggested: {suggestion.suggested} lb <span style={s.suggestionSub}>({suggestion.reason})</span></div>
-                            )}
-
-                            <div style={s.setChipRow}>
-                              {sets.map((st, idx) => {
-                                const isEditing = editingSet && editingSet.exId === ex.id && editingSet.idx === idx;
-                                if (isEditing) {
-                                  return (
-                                    <div key={idx} style={s.setEditRow}>
-                                      <input type="text" inputMode="decimal" value={st.weight} onChange={(e) => updateSet(ex.id, idx, "weight", e.target.value)} style={s.setEditInput} placeholder="wt" />
-                                      <span style={{ color: "#8CA39A" }}>×</span>
-                                      <input type="text" inputMode="numeric" value={st.reps} onChange={(e) => updateSet(ex.id, idx, "reps", e.target.value)} style={s.setEditInput} placeholder="reps" />
-                                      <button style={s.setChipBtn} onClick={() => setEditingSet(null)} aria-label="Done editing">✓</button>
-                                      <button style={{ ...s.setChipBtn, color: "#FF6B6B" }} onClick={() => { deleteSet(ex.id, idx); setEditingSet(null); }} aria-label="Delete set">×</button>
-                                    </div>
-                                  );
-                                }
-                                return (
-                                  <button key={idx} style={s.setChip} onClick={() => setEditingSet({ exId: ex.id, idx })}>
-                                    {st.weight || "—"}×{st.reps || "—"}
-                                  </button>
-                                );
-                              })}
-                              <button style={s.addSetBtn} onClick={() => handleAddSet(ex)}>+ Set</button>
-                              <button style={s.micBtn} onClick={() => voiceLogWeight(ex)} aria-label="Say the weight to log a set">
-                                <span style={{ color: listeningId === ex.id ? "#4FD9AE" : "#8CA39A" }}>{listeningId === ex.id ? "●" : "🎤"}</span>
-                              </button>
-                              <button style={s.timerBtn} onClick={() => startTimer(ex.id)}>
-                                <span style={{ color: timerLeft ? "#4FD9AE" : "#8CA39A" }}>⏱</span>
-                              </button>
-                            </div>
-
-                            {sets.length > 0 && (
-                              <div style={s.effortRow}>
-                                {EFFORT_OPTIONS.map(([val, label]) => (
-                                  <button key={val} style={{ ...s.effortBtn, ...(log.effort === val ? s.effortBtnActive : {}) }} onClick={() => setEffort(ex.id, val)}>{label}</button>
-                                ))}
-                                <button style={{ ...s.painBtn, ...(log.pain ? s.painBtnActive : {}) }} onClick={() => togglePain(ex.id)}>⚠️ Pain</button>
-                              </div>
-                            )}
-                            {timerLeft !== undefined && (
-                              <div style={s.timerRow}>Rest: {Math.floor(timerLeft / 60)}:{String(timerLeft % 60).padStart(2, "0")}</div>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
+                    <div style={s.sessionNoteWrap}>
+                      <div style={s.sessionNoteLabel}>SESSION NOTE</div>
+                      <input
+                        type="text"
+                        value={sessNote}
+                        onChange={(e) => updateSessionNote(day.title, e.target.value)}
+                        placeholder="sleep, energy, travel, equipment..."
+                        style={s.sessionNoteInput}
+                      />
+                    </div>
+                    {dayCountable.length > 0 && (
+                      <button style={s.startBtn} onClick={() => setWorkoutSession({ dayTitle: day.title, idx: 0 })}>▶ Start Workout</button>
+                    )}
+                    {day.exercises.map((ex) => renderExercise(ex))}
                   </div>
                 )}
               </section>
@@ -659,6 +764,24 @@ const s = {
   chartTitle: { fontSize: 13, fontWeight: 700, marginBottom: 8 },
   footer: { textAlign: "center", padding: "12px 18px calc(24px + env(safe-area-inset-bottom)) 18px", fontSize: 11, color: "#5C584F" },
   saveIndicator: { fontFamily: "'IBM Plex Mono', monospace" },
+
+  noteWrap: { marginTop: 8 },
+  noteToggle: { background: "transparent", border: "none", color: "#8CA39A", fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, padding: "6px 0", cursor: "pointer", minHeight: 32 },
+  noteInput: { width: "100%", background: "#0D1110", border: "1px solid #333F3A", borderRadius: 8, color: "#EAEFEC", fontSize: 13, padding: "10px 10px", marginTop: 4, minHeight: 40 },
+
+  sessionNoteWrap: { marginBottom: 14 },
+  sessionNoteLabel: { fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, letterSpacing: "0.08em", color: "#8CA39A", marginBottom: 5 },
+  sessionNoteInput: { width: "100%", background: "#0D1110", border: "1px solid #333F3A", borderRadius: 8, color: "#EAEFEC", fontSize: 13, padding: "10px 10px", minHeight: 40 },
+
+  startBtn: { width: "100%", background: "transparent", border: "1px solid #4FD9AE", color: "#4FD9AE", borderRadius: 8, padding: "12px 8px", fontSize: 13, fontWeight: 700, cursor: "pointer", minHeight: 44, marginBottom: 14 },
+
+  sessionHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "calc(16px + env(safe-area-inset-top)) 18px 8px" },
+  sessionExit: { background: "transparent", border: "none", color: "#8CA39A", fontSize: 20, cursor: "pointer", width: 32, height: 32 },
+  sessionProgress: { fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, color: "#8CA39A" },
+  sessionDayTitle: { textAlign: "center", fontSize: 12, color: "#4FD9AE", fontFamily: "'IBM Plex Mono', monospace", marginBottom: 8, padding: "0 18px" },
+  sessionNav: { display: "flex", gap: 10, padding: "12px 18px calc(20px + env(safe-area-inset-bottom))" },
+  sessionNavBtn: { flex: 1, background: "transparent", border: "1px solid #333F3A", color: "#EAEFEC", borderRadius: 10, padding: "16px 8px", fontSize: 15, fontWeight: 700, cursor: "pointer", minHeight: 52 },
+  sessionNavPrimary: { background: "#4FD9AE", borderColor: "#4FD9AE", color: "#0D1110" },
 };
 
 ReactDOM.createRoot(document.getElementById("root")).render(<WorkoutTracker />);
