@@ -1,17 +1,39 @@
 {
   "1:m1": {
-    "weight": "125",
-    "done": true
+    "sets": [
+      {
+        "weight": 125,
+        "reps": 6
+      }
+    ],
+    "effort": "solid",
+    "pain": false,
+    "note": ""
   },
   "1:m2": {
-    "weight": "120",
-    "done": true
+    "sets": [
+      {
+        "weight": 120,
+        "reps": 8
+      }
+    ],
+    "effort": "solid",
+    "pain": false,
+    "note": ""
   },
   "1:m3": {
-    "weight": "80",
-    "done": true
+    "sets": [
+      {
+        "weight": 80,
+        "reps": 8
+      }
+    ],
+    "effort": "solid",
+    "pain": false,
+    "note": ""
   },
   "1:m4": {
-    "done": true
+    "done": true,
+    "note": ""
   }
 }
