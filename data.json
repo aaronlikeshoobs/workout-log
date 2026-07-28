@@ -31,6 +31,10 @@
       {
         "weight": 100,
         "reps": 8
+      },
+      {
+        "weight": 100,
+        "reps": 8
       }
     ],
     "effort": "solid",
