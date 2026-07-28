@@ -20,7 +20,8 @@
     ],
     "effort": "solid",
     "pain": false,
-    "note": ""
+    "note": "",
+    "updatedAt": "2026-07-27"
   },
   "1:m2": {
     "sets": [
@@ -43,7 +44,8 @@
     ],
     "effort": "solid",
     "pain": false,
-    "note": ""
+    "note": "",
+    "updatedAt": "2026-07-27"
   },
   "1:m3": {
     "sets": [
@@ -66,17 +68,21 @@
     ],
     "effort": "solid",
     "pain": false,
-    "note": ""
+    "note": "",
+    "updatedAt": "2026-07-27"
   },
   "1:m4": {
     "done": true,
-    "note": ""
+    "note": "",
+    "updatedAt": "2026-07-27"
   },
   "1:t1": {
-    "done": true
+    "done": true,
+    "updatedAt": "2026-07-28"
   },
   "1:t2": {
-    "done": true
+    "done": true,
+    "updatedAt": "2026-07-28"
   },
   "1:t3": {
     "sets": [
@@ -94,7 +100,8 @@
       }
     ],
     "effort": "easy",
-    "note": "Light band"
+    "note": "Light band",
+    "updatedAt": "2026-07-28"
   },
   "1:t4": {
     "sets": [
@@ -112,6 +119,7 @@
       }
     ],
     "note": "Added shrug",
-    "effort": "solid"
+    "effort": "solid",
+    "updatedAt": "2026-07-28"
   }
 }
