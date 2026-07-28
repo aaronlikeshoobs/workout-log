@@ -86,24 +86,10 @@ function migrateLogs(data, program) {
   return { data: out, changed };
 }
 
-// ---- GitHub-backed storage ----
-const GH_OWNER = "aaronlikeshoobs";
-const GH_REPO = "workout-log";
-const GH_PATH = "data.json";
-// Token embedded directly so the app never has to ask. Split into parts
-// purely to avoid automated secret-scanners flagging the commit — this
-// does not make it private. Anyone viewing this page's source can see it.
-// It's scoped to only this one repo's contents, nothing else.
-function getToken() {
-  const parts = [
-    "github_pat_11AS425LI0rPsORCAnBY5c_AXlqlgh3tt7Ykw2E8exlxKBGI3M0ah6",
-    "TvGssjwzQr1iBNKRCBHUaYXumSao",
-  ];
-  return parts.join("");
-}
-const GH_API = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
-const toB64 = (str) => btoa(unescape(encodeURIComponent(str)));
-const fromB64 = (b64) => decodeURIComponent(escape(atob(b64.replace(/\n/g, ""))));
+// ---- Storage, proxied through repo-proxy Worker — no GitHub token in this file, ever ----
+const WORKER_URL = "https://repo-proxy.restless-union-743f.workers.dev";
+const REPO = "workout-log";
+const LS_PASSWORD = "app-password";
 
 const EFFORT_OPTIONS = [
   ["easy", "😌 Easy"],
@@ -137,33 +123,48 @@ function WorkoutTracker() {
   const [editingSet, setEditingSet] = useState(null); // {exId, idx}
   const [openNotes, setOpenNotes] = useState({}); // { [exId]: true }
   const [workoutSession, setWorkoutSession] = useState(null); // { dayTitle, idx }
+  const [needsPassword, setNeedsPassword] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
 
   const timerIntervalsRef = useRef({});
   const logsRef = useRef({});
   const saveSeqRef = useRef(0);
   const writeQueueRef = useRef(Promise.resolve());
   const shaRef = useRef(null);
+  const pendingSaveRef = useRef(null);
 
   const ghGet = async () => {
-    const res = await fetch(GH_API, { headers: { Authorization: `Bearer ${getToken()}`, Accept: "application/vnd.github+json" } });
-    if (!res.ok) throw new Error(`GitHub read failed (${res.status})`);
+    const res = await fetch(`${WORKER_URL}/?repo=${REPO}`);
+    if (!res.ok) throw new Error(`Read failed (${res.status})`);
     const json = await res.json();
     shaRef.current = json.sha;
-    return json.content ? JSON.parse(fromB64(json.content) || "{}") : {};
+    return json.content || {};
   };
 
   const ghPut = async (data) => {
-    const res = await fetch(GH_API, {
+    const pw = localStorage.getItem(LS_PASSWORD);
+    if (!pw) {
+      pendingSaveRef.current = data;
+      setNeedsPassword(true);
+      throw new Error("App password needed — enter it below to save.");
+    }
+    const res = await fetch(`${WORKER_URL}/?repo=${REPO}`, {
       method: "PUT",
-      headers: { Authorization: `Bearer ${getToken()}`, Accept: "application/vnd.github+json" },
-      body: JSON.stringify({ message: `update log ${new Date().toISOString()}`, content: toB64(JSON.stringify(data, null, 2)), sha: shaRef.current }),
+      headers: { "Content-Type": "application/json", "X-App-Password": pw },
+      body: JSON.stringify({ content: data, sha: shaRef.current }),
     });
     if (!res.ok) {
+      if (res.status === 401) {
+        localStorage.removeItem(LS_PASSWORD);
+        pendingSaveRef.current = data;
+        setNeedsPassword(true);
+        throw new Error("Wrong app password — try again.");
+      }
       if (res.status === 409 || res.status === 422) await ghGet();
-      throw new Error(`GitHub write failed (${res.status})`);
+      throw new Error(`Save failed (${res.status})`);
     }
     const json = await res.json();
-    shaRef.current = json.content.sha;
+    shaRef.current = json.sha;
   };
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -257,6 +258,17 @@ function WorkoutTracker() {
   };
   const setExerciseNote = (exId, note) => {
     mutateLog(exId, (cur) => ({ ...cur, note }));
+  };
+  const submitPassword = () => {
+    if (!passwordInput) return;
+    localStorage.setItem(LS_PASSWORD, passwordInput);
+    setNeedsPassword(false);
+    setPasswordInput("");
+    if (pendingSaveRef.current) {
+      const data = pendingSaveRef.current;
+      pendingSaveRef.current = null;
+      saveNow(data);
+    }
   };
   const updateSessionNote = (dayTitle, note) => {
     const key = sessionNoteKey(week, dayTitle);
@@ -543,6 +555,23 @@ function WorkoutTracker() {
     const exDone = isExerciseComplete(week, ex);
     return (
       <div style={s.app}>
+        {needsPassword && (
+          <div style={s.pwOverlay}>
+            <div style={s.pwModal}>
+              <div style={s.pwTitle}>App password needed</div>
+              <div style={s.pwSub}>Enter the password you set for this app to save.</div>
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") submitPassword(); }}
+                style={s.pwInput}
+                autoFocus
+              />
+              <button style={s.pwBtn} onClick={submitPassword}>Save</button>
+            </div>
+          </div>
+        )}
         <div style={s.sessionHeader}>
           <button style={s.sessionExit} onClick={() => setWorkoutSession(null)}>✕</button>
           <div style={s.sessionProgress}>{idx + 1} / {exList.length}</div>
@@ -568,6 +597,23 @@ function WorkoutTracker() {
 
   return (
     <div style={s.app}>
+      {needsPassword && (
+        <div style={s.pwOverlay}>
+          <div style={s.pwModal}>
+            <div style={s.pwTitle}>App password needed</div>
+            <div style={s.pwSub}>Enter the password you set for this app to save.</div>
+            <input
+              type="password"
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") submitPassword(); }}
+              style={s.pwInput}
+              autoFocus
+            />
+            <button style={s.pwBtn} onClick={submitPassword}>Save</button>
+          </div>
+        </div>
+      )}
       <header style={s.header}>
         <div style={s.headerTop}>
           <div>
@@ -786,6 +832,13 @@ const s = {
   sessionNav: { display: "flex", gap: 10, padding: "12px 18px calc(20px + env(safe-area-inset-bottom))" },
   sessionNavBtn: { flex: 1, background: "transparent", border: "1px solid #333F3A", color: "#EAEFEC", borderRadius: 10, padding: "16px 8px", fontSize: 15, fontWeight: 700, cursor: "pointer", minHeight: 52 },
   sessionNavPrimary: { background: "#4FD9AE", borderColor: "#4FD9AE", color: "#0D1110" },
+
+  pwOverlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, zIndex: 100 },
+  pwModal: { background: "#161C1A", border: "1px solid #2A332F", borderRadius: 14, padding: 22, maxWidth: 320, width: "100%" },
+  pwTitle: { fontSize: 16, fontWeight: 700, marginBottom: 6 },
+  pwSub: { fontSize: 12.5, color: "#8CA39A", marginBottom: 14, lineHeight: 1.5 },
+  pwInput: { width: "100%", background: "#0D1110", border: "1px solid #333F3A", borderRadius: 8, color: "#EAEFEC", fontSize: 16, padding: "12px 12px", marginBottom: 12, minHeight: 46 },
+  pwBtn: { width: "100%", background: "#4FD9AE", border: "none", color: "#0D1110", borderRadius: 8, padding: "13px 8px", fontSize: 14, fontWeight: 700, cursor: "pointer", minHeight: 46 },
 };
 
 ReactDOM.createRoot(document.getElementById("root")).render(<WorkoutTracker />);
