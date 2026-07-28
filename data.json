@@ -95,5 +95,13 @@
     ],
     "effort": "easy",
     "note": "Light band"
+  },
+  "1:t4": {
+    "sets": [
+      {
+        "weight": 0,
+        "reps": 15
+      }
+    ]
   }
 }
