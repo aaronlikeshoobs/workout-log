@@ -4,62 +4,70 @@
     "days": [
       {
         "title": "Monday",
-        "focus": "Full Body Strength — Squat Focus",
+        "focus": "Full Body Strength \u2014 Squat Focus",
         "exercises": [
           {
             "id": "m1",
             "name": "Barbell Back Squat",
             "target": "4 x 6",
-            "goal": ""
+            "goal": "",
+            "category": "main"
           },
           {
             "id": "m2",
             "name": "Bench Press",
             "target": "4 x 8",
-            "goal": ""
+            "goal": "",
+            "category": "main"
           },
           {
             "id": "m3",
             "name": "Barbell Row",
             "target": "4 x 8",
-            "goal": ""
+            "goal": "",
+            "category": "main"
           },
           {
             "id": "m4",
             "name": "Plank",
             "target": "3 x 30s",
-            "goal": "bodyweight"
+            "goal": "bodyweight",
+            "category": "accessory"
           }
         ]
       },
       {
         "title": "Tuesday",
         "focus": "Peloton Cardio + Knee Rehab",
-        "note": "Knee rehab — keep pain-free, add resistance only if quiet next day",
+        "note": "Knee rehab \u2014 keep pain-free, add resistance only if quiet next day",
         "exercises": [
           {
             "id": "t1",
             "name": "Peloton Ride (moderate)",
             "target": "30 min",
-            "goal": "n/a"
+            "goal": "n/a",
+            "category": "cardio"
           },
           {
             "id": "t2",
             "name": "Single-Leg Glute Bridge",
             "target": "3 x 12/side",
-            "goal": "bodyweight"
+            "goal": "bodyweight",
+            "category": "rehab"
           },
           {
             "id": "t3",
             "name": "Standing Lateral Band Walk",
             "target": "3 x 10 steps/side",
-            "goal": "light band"
+            "goal": "light band",
+            "category": "rehab"
           },
           {
             "id": "t4",
             "name": "Calf Raises",
             "target": "3 x 15",
-            "goal": ""
+            "goal": "",
+            "category": "accessory"
           }
         ]
       },
@@ -71,25 +79,29 @@
             "id": "w1",
             "name": "KB Swings",
             "target": "5 x 15",
-            "goal": ""
+            "goal": "",
+            "category": "main"
           },
           {
             "id": "w2",
             "name": "Goblet Squat",
             "target": "3 x 12",
-            "goal": ""
+            "goal": "",
+            "category": "main"
           },
           {
             "id": "w3",
             "name": "KB Row",
             "target": "3 x 10/side",
-            "goal": ""
+            "goal": "",
+            "category": "main"
           },
           {
             "id": "w4",
             "name": "Farmer Carry",
             "target": "3 x 40yd",
-            "goal": ""
+            "goal": "",
+            "category": "accessory"
           }
         ]
       },
@@ -101,43 +113,49 @@
             "id": "th1",
             "name": "Apple Fitness Yoga/Mobility",
             "target": "20-30 min",
-            "goal": "n/a"
+            "goal": "n/a",
+            "category": "mobility"
           },
           {
             "id": "th2",
             "name": "Walk or Easy Hike",
             "target": "20-30 min",
-            "goal": "n/a"
+            "goal": "n/a",
+            "category": "cardio"
           }
         ]
       },
       {
         "title": "Friday",
-        "focus": "Full Body Strength — Hinge Focus",
+        "focus": "Full Body Strength \u2014 Hinge Focus",
         "exercises": [
           {
             "id": "f1",
             "name": "Deadlift",
             "target": "4 x 6",
-            "goal": ""
+            "goal": "",
+            "category": "main"
           },
           {
             "id": "f2",
             "name": "Dumbbell Shoulder Press",
             "target": "3 x 10",
-            "goal": ""
+            "goal": "",
+            "category": "main"
           },
           {
             "id": "f3",
             "name": "Pull-Up / Lat Pulldown",
             "target": "3 x 8",
-            "goal": ""
+            "goal": "",
+            "category": "main"
           },
           {
             "id": "f4",
             "name": "Step-Ups (low box)",
             "target": "3 x 8/side",
-            "goal": "watch right knee"
+            "goal": "watch right knee",
+            "category": "accessory"
           }
         ]
       },
@@ -149,7 +167,8 @@
             "id": "sa1",
             "name": "Peloton Ride OR Outdoor Hike",
             "target": "45 min",
-            "goal": "n/a"
+            "goal": "n/a",
+            "category": "cardio"
           }
         ]
       },
@@ -161,7 +180,8 @@
             "id": "su1",
             "name": "Walk / Stretch / Rest",
             "target": "as needed",
-            "goal": "n/a"
+            "goal": "n/a",
+            "category": "rest"
           }
         ]
       }
