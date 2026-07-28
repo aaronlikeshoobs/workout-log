@@ -32,6 +32,10 @@ const { useState, useEffect, useCallback, useRef } = React;
 
 const DAY_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 function todayName() { return DAY_ORDER[(new Date().getDay() + 6) % 7]; }
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
 function isWeightExercise(ex) {
   const t = (ex.target || "").toLowerCase();
   const g = (ex.goal || "").toLowerCase();
@@ -230,7 +234,7 @@ function WorkoutTracker() {
   };
 
   const addSet = (exId, weight, reps) => {
-    mutateLog(exId, (cur) => ({ ...cur, sets: [...(cur.sets || []), { weight: Number(weight) || 0, reps: Number(reps) || 0 }] }));
+    mutateLog(exId, (cur) => ({ ...cur, sets: [...(cur.sets || []), { weight: Number(weight) || 0, reps: Number(reps) || 0 }], updatedAt: todayStr() }));
   };
   const updateSet = (exId, idx, field, value) => {
     mutateLog(exId, (cur) => {
@@ -249,7 +253,7 @@ function WorkoutTracker() {
     mutateLog(exId, (cur) => ({ ...cur, pain: !cur.pain }));
   };
   const toggleDone = (exId) => {
-    mutateLog(exId, (cur) => ({ ...cur, done: !cur.done }));
+    mutateLog(exId, (cur) => ({ ...cur, done: !cur.done, updatedAt: !cur.done ? todayStr() : cur.updatedAt }));
   };
   const setExerciseNote = (exId, note) => {
     mutateLog(exId, (cur) => ({ ...cur, note }));
@@ -271,7 +275,7 @@ function WorkoutTracker() {
     const suggestion = suggestionFor(ex.id);
     const w = sets.length ? sets[sets.length - 1].weight : (suggestion ? suggestion.suggested : 0);
     const newIdx = sets.length;
-    mutateLog(ex.id, (c) => ({ ...c, sets: [...(c.sets || []), { weight: w, reps: targetReps }] }));
+    mutateLog(ex.id, (c) => ({ ...c, sets: [...(c.sets || []), { weight: w, reps: targetReps }], updatedAt: todayStr() }));
     if (!w) setEditingSet({ exId: ex.id, idx: newIdx });
   };
 
