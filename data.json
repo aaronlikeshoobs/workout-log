@@ -81,7 +81,7 @@
   "1:t3": {
     "sets": [
       {
-        "weight": "",
+        "weight": 5,
         "reps": 10
       }
     ],
