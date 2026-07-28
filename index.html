@@ -734,7 +734,7 @@ function WorkoutTracker() {
                         style={s.sessionNoteInput}
                       />
                     </div>
-                    {dayCountable.length > 0 && (
+                    {dayCountable.length > 0 && dayDone < dayCountable.length && (
                       <button style={s.startBtn} onClick={() => setWorkoutSession({ dayTitle: day.title, idx: 0 })}>▶ Start Workout</button>
                     )}
                     {day.exercises.map((ex) => renderExercise(ex))}
