@@ -120,5 +120,14 @@
     "note": "Added shrug",
     "effort": "solid",
     "updatedAt": "2026-07-28"
+  },
+  "1:w1": {
+    "sets": [
+      {
+        "weight": 0,
+        "reps": 15
+      }
+    ],
+    "updatedAt": "2026-07-29"
   }
 }
