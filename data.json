@@ -164,5 +164,14 @@
     ],
     "updatedAt": "2026-07-29",
     "effort": "grinding"
+  },
+  "1:w3": {
+    "sets": [
+      {
+        "weight": 0,
+        "reps": 10
+      }
+    ],
+    "updatedAt": "2026-07-29"
   }
 }
