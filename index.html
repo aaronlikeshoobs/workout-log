@@ -16,7 +16,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { overscroll-behavior-y: contain; }
-  body { background: #0D1110; color: #EAEFEC; font-family: 'Public Sans', -apple-system, 'Helvetica Neue', Arial, sans-serif; touch-action: manipulation; }
+  body { background: #0D1110; color: #EAEFEC; font-family: 'Public Sans', -apple-system, 'Helvetica Neue', Arial, sans-serif; touch-action: manipulation; overflow-anchor: none; }
   input[type="text"]:focus { outline: 2px solid #4FD9AE; outline-offset: 1px; }
   button:focus-visible { outline: 2px solid #4FD9AE; outline-offset: 2px; }
   button { font-family: inherit; user-select: none; }
@@ -224,6 +224,14 @@ function WorkoutTracker() {
     })();
     return () => { Object.values(timerIntervalsRef.current).forEach(clearInterval); };
   }, []);
+
+  const scrolledOnceRef = useRef(false);
+  useEffect(() => {
+    if (loaded && PROGRAM && week !== null && !scrolledOnceRef.current) {
+      scrolledOnceRef.current = true;
+      window.scrollTo(0, 0); // real content just rendered for the first time — reset scroll now, not before
+    }
+  }, [loaded, PROGRAM, week]);
 
   const mutateLog = (exId, updater) => {
     const key = `${week}:${exId}`;
