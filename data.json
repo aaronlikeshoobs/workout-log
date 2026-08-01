@@ -204,5 +204,9 @@
   "1:th2": {
     "done": true,
     "note": ""
+  },
+  "1:sa1": {
+    "done": true,
+    "updatedAt": "2026-08-01"
   }
 }
