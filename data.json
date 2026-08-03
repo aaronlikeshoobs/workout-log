@@ -208,5 +208,14 @@
   "1:sa1": {
     "done": true,
     "note": ""
+  },
+  "2:m1": {
+    "sets": [
+      {
+        "weight": 130,
+        "reps": 6
+      }
+    ],
+    "updatedAt": "2026-08-03"
   }
 }
