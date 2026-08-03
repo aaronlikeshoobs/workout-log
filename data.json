@@ -274,5 +274,9 @@
     ],
     "updatedAt": "2026-08-03",
     "effort": "solid"
+  },
+  "2:m4": {
+    "done": true,
+    "updatedAt": "2026-08-03"
   }
 }
