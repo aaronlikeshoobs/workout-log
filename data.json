@@ -306,5 +306,14 @@
     "updatedAt": "2026-08-04",
     "effort": "solid",
     "note": "Medium band"
+  },
+  "2:t4": {
+    "sets": [
+      {
+        "weight": 52.5,
+        "reps": 15
+      }
+    ],
+    "updatedAt": "2026-08-04"
   }
 }
