@@ -464,5 +464,14 @@
     ],
     "updatedAt": "2026-08-07",
     "effort": "missed"
+  },
+  "2:f4": {
+    "sets": [
+      {
+        "weight": 0,
+        "reps": 8
+      }
+    ],
+    "updatedAt": "2026-08-07"
   }
 }
