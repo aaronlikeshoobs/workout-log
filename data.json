@@ -406,5 +406,14 @@
   "2:th2": {
     "done": true,
     "note": ""
+  },
+  "2:f1": {
+    "sets": [
+      {
+        "weight": 0,
+        "reps": 6
+      }
+    ],
+    "updatedAt": "2026-08-07"
   }
 }
