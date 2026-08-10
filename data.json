@@ -482,5 +482,14 @@
     ],
     "updatedAt": "2026-08-07",
     "effort": "easy"
+  },
+  "3:m1": {
+    "sets": [
+      {
+        "weight": 135,
+        "reps": 6
+      }
+    ],
+    "updatedAt": "2026-08-10"
   }
 }
