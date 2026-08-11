@@ -576,6 +576,13 @@
     "effort": "solid"
   },
   "3:t3": {
-    "note": "Ankle weights"
+    "note": "Ankle weights",
+    "sets": [
+      {
+        "weight": 3,
+        "reps": 12
+      }
+    ],
+    "updatedAt": "2026-08-11"
   }
 }
