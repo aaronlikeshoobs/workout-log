@@ -579,7 +579,7 @@
     "note": "Ankle weights",
     "sets": [
       {
-        "weight": "",
+        "weight": 1,
         "reps": 12
       }
     ],
