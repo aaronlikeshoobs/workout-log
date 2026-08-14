@@ -731,5 +731,14 @@
     ],
     "updatedAt": "2026-08-14",
     "effort": "solid"
+  },
+  "3:f3": {
+    "sets": [
+      {
+        "weight": 0,
+        "reps": 6
+      }
+    ],
+    "updatedAt": "2026-08-14"
   }
 }
