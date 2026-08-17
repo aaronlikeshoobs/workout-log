@@ -779,5 +779,14 @@
   "3:su1": {
     "done": true,
     "note": ""
+  },
+  "4:m1": {
+    "sets": [
+      {
+        "weight": 140,
+        "reps": 6
+      }
+    ],
+    "updatedAt": "2026-08-17"
   }
 }
