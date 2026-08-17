@@ -801,5 +801,14 @@
     ],
     "updatedAt": "2026-08-17",
     "effort": "solid"
+  },
+  "4:m2": {
+    "sets": [
+      {
+        "weight": 135,
+        "reps": 8
+      }
+    ],
+    "updatedAt": "2026-08-17"
   }
 }
