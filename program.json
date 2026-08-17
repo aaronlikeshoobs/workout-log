@@ -695,7 +695,7 @@
       {
         "title": "Friday",
         "focus": "Full Body Strength \u2014 Hinge Focus",
-        "note": "Pull-ups missed target two weeks running, even after dropping to 3x6 (last week: 6/5/4). Switching to Lat Pulldown so the load is actually controllable \u2014 start light, add weight weekly like the other lifts. Step-ups took the added weight well; bump load if 15lb feels easy again.",
+        "note": "Pull-ups missed target two weeks running (last week: 6/5/4 vs target of 6). No lat pulldown machine, so staying with pull-ups but banded for assistance to make the same rep target achievable \u2014 drop the assist band as it gets easier. Step-ups: working weight is 15lb dumbbells per side, going well \u2014 bump from there when it feels easy again.",
         "exercises": [
           {
             "id": "f1",
@@ -713,9 +713,9 @@
           },
           {
             "id": "f3",
-            "name": "Lat Pulldown",
-            "target": "3 x 8",
-            "goal": "start light, build weekly",
+            "name": "Pull-Ups (banded assist)",
+            "target": "3 x 6",
+            "goal": "use lightest band that lets you hit all reps",
             "category": "main"
           },
           {
