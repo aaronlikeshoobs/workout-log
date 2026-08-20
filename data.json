@@ -933,5 +933,9 @@
     ],
     "updatedAt": "2026-08-19",
     "effort": "solid"
+  },
+  "4:th1": {
+    "done": true,
+    "updatedAt": "2026-08-20"
   }
 }
