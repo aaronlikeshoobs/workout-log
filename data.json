@@ -941,5 +941,14 @@
   "4:th2": {
     "done": true,
     "note": ""
+  },
+  "4:f1": {
+    "sets": [
+      {
+        "weight": 205,
+        "reps": 6
+      }
+    ],
+    "updatedAt": "2026-08-21"
   }
 }
