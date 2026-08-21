@@ -999,5 +999,14 @@
     ],
     "updatedAt": "2026-08-21",
     "effort": "missed"
+  },
+  "4:f4": {
+    "sets": [
+      {
+        "weight": 16,
+        "reps": 10
+      }
+    ],
+    "updatedAt": "2026-08-21"
   }
 }
