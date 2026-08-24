@@ -754,5 +754,195 @@
         ]
       }
     ]
+  },
+  "5": {
+    "label": "Week 5",
+    "days": [
+      {
+        "title": "Monday",
+        "focus": "Full Body Strength \u2014 Squat Focus",
+        "exercises": [
+          {
+            "id": "m1",
+            "name": "Barbell Back Squat",
+            "target": "4 x 6",
+            "goal": "",
+            "category": "main"
+          },
+          {
+            "id": "m2",
+            "name": "Bench Press",
+            "target": "4 x 8",
+            "goal": "",
+            "category": "main"
+          },
+          {
+            "id": "m3",
+            "name": "Barbell Row",
+            "target": "4 x 8",
+            "goal": "",
+            "category": "main"
+          },
+          {
+            "id": "m4",
+            "name": "Plank",
+            "target": "3 x 40s",
+            "goal": "bodyweight",
+            "category": "accessory"
+          }
+        ]
+      },
+      {
+        "title": "Tuesday",
+        "focus": "Peloton Cardio + Knee Rehab",
+        "exercises": [
+          {
+            "id": "t1",
+            "name": "Peloton Ride (moderate)",
+            "target": "30 min",
+            "goal": "n/a",
+            "category": "cardio"
+          },
+          {
+            "id": "t2",
+            "name": "Single-Leg Glute Bridge (light band)",
+            "target": "3 x 15/side",
+            "goal": "",
+            "category": "rehab"
+          },
+          {
+            "id": "t3",
+            "name": "Standing Lateral Band Walk",
+            "target": "3 x 12 steps/side",
+            "goal": "",
+            "category": "rehab"
+          },
+          {
+            "id": "t4",
+            "name": "Calf Raises",
+            "target": "3 x 15",
+            "goal": "",
+            "category": "accessory"
+          }
+        ]
+      },
+      {
+        "title": "Wednesday",
+        "focus": "Kettlebell Conditioning",
+        "note": "KB Swings: same weight for 4 weeks straight (53lb is a big jump to the next size) \u2014 pushing reps instead: 5x15 -> 5x18.",
+        "exercises": [
+          {
+            "id": "w1",
+            "name": "KB Swings",
+            "target": "5 x 18",
+            "goal": "",
+            "category": "main"
+          },
+          {
+            "id": "w2",
+            "name": "Goblet Squat",
+            "target": "3 x 10",
+            "goal": "",
+            "category": "main"
+          },
+          {
+            "id": "w3",
+            "name": "KB Row",
+            "target": "3 x 10/side",
+            "goal": "",
+            "category": "main"
+          },
+          {
+            "id": "w4",
+            "name": "Farmer Carry",
+            "target": "3 x 45yd",
+            "goal": "",
+            "category": "accessory"
+          }
+        ]
+      },
+      {
+        "title": "Thursday",
+        "focus": "Active Recovery",
+        "note": "Rehab work and mobility fell off last week \u2014 back in the plan, same as it's always been.",
+        "exercises": [
+          {
+            "id": "th1",
+            "name": "Apple Fitness Yoga/Mobility",
+            "target": "20-30 min",
+            "goal": "n/a",
+            "category": "mobility"
+          },
+          {
+            "id": "th2",
+            "name": "Walk or Easy Hike",
+            "target": "20-30 min",
+            "goal": "n/a",
+            "category": "cardio"
+          }
+        ]
+      },
+      {
+        "title": "Friday",
+        "focus": "Full Body Strength \u2014 Hinge Focus",
+        "note": "Pull-ups: 3 weeks of missed reps through two different fixes. Resetting to 3x3 \u2014 the goal this week is just hitting the number every set, not the number itself. Build back up from a real success, not another guess.",
+        "exercises": [
+          {
+            "id": "f1",
+            "name": "Deadlift",
+            "target": "4 x 6",
+            "goal": "",
+            "category": "main"
+          },
+          {
+            "id": "f2",
+            "name": "Dumbbell Shoulder Press",
+            "target": "3 x 10",
+            "goal": "",
+            "category": "main"
+          },
+          {
+            "id": "f3",
+            "name": "Pull-Ups (banded assist)",
+            "target": "3 x 3",
+            "goal": "use whatever band makes this actually achievable",
+            "category": "main"
+          },
+          {
+            "id": "f4",
+            "name": "Step-Ups (low box, hand weights)",
+            "target": "3 x 10/side",
+            "goal": "",
+            "category": "accessory"
+          }
+        ]
+      },
+      {
+        "title": "Saturday",
+        "focus": "Peloton or Hike",
+        "exercises": [
+          {
+            "id": "sa1",
+            "name": "Peloton Ride OR Outdoor Hike",
+            "target": "45 min",
+            "goal": "n/a",
+            "category": "cardio"
+          }
+        ]
+      },
+      {
+        "title": "Sunday",
+        "focus": "Light Movement",
+        "exercises": [
+          {
+            "id": "su1",
+            "name": "Walk / Stretch / Rest",
+            "target": "as needed",
+            "goal": "n/a",
+            "category": "rest"
+          }
+        ]
+      }
+    ]
   }
 }
