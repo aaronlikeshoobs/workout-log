@@ -170,9 +170,14 @@ function WorkoutTracker() {
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  const saveNow = useCallback((next) => {
-    setSaveState("saving");
-    setSaveError(null);
+  const saveTimerRef = useRef(null);
+  const pendingDataRef = useRef(null);
+
+  const flushSave = useCallback(() => {
+    if (saveTimerRef.current) { clearTimeout(saveTimerRef.current); saveTimerRef.current = null; }
+    const next = pendingDataRef.current;
+    pendingDataRef.current = null;
+    if (!next) return;
     const mySeq = ++saveSeqRef.current;
     writeQueueRef.current = writeQueueRef.current.then(async () => {
       if (mySeq !== saveSeqRef.current) return;
@@ -196,6 +201,29 @@ function WorkoutTracker() {
       }
     });
   }, []);
+
+  // Sets logged in quick succession (a real set, then the next one seconds later) get
+  // batched into one commit instead of one each — cuts down on rapid-fire GitHub Pages
+  // rebuilds/notifications without changing when data is actually safe: a page-hide
+  // (backgrounding, tab switch, navigating to Hub) flushes immediately regardless of
+  // the debounce timer, so nothing pending is ever at risk of being lost.
+  const saveNow = useCallback((next) => {
+    pendingDataRef.current = next;
+    setSaveState("saving");
+    setSaveError(null);
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(flushSave, 2000);
+  }, [flushSave]);
+
+  useEffect(() => {
+    const handleHide = () => { if (document.hidden) flushSave(); };
+    document.addEventListener("visibilitychange", handleHide);
+    window.addEventListener("pagehide", flushSave);
+    return () => {
+      document.removeEventListener("visibilitychange", handleHide);
+      window.removeEventListener("pagehide", flushSave);
+    };
+  }, [flushSave]);
 
   // ---- Load program.json + data.json together, migrate legacy entries once ----
   useEffect(() => {
