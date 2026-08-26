@@ -1153,5 +1153,14 @@
     ],
     "updatedAt": "2026-08-26",
     "effort": "solid"
+  },
+  "5:w4": {
+    "sets": [
+      {
+        "weight": 93,
+        "reps": 45
+      }
+    ],
+    "updatedAt": "2026-08-26"
   }
 }
