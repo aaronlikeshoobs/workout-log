@@ -1179,5 +1179,13 @@
     ],
     "updatedAt": "2026-08-26",
     "effort": "grinding"
+  },
+  "5:th1": {
+    "done": true,
+    "updatedAt": "2026-08-28"
+  },
+  "5:th2": {
+    "done": true,
+    "updatedAt": "2026-08-28"
   }
 }
