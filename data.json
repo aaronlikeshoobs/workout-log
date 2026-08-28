@@ -1237,6 +1237,10 @@
       {
         "weight": 0,
         "reps": 5
+      },
+      {
+        "weight": 0,
+        "reps": 3
       }
     ],
     "updatedAt": "2026-08-28",
