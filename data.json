@@ -1246,5 +1246,14 @@
     "updatedAt": "2026-08-28",
     "note": "Blue band",
     "effort": "solid"
+  },
+  "5:f4": {
+    "sets": [
+      {
+        "weight": 16,
+        "reps": 10
+      }
+    ],
+    "updatedAt": "2026-08-28"
   }
 }
