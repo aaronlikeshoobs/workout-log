@@ -1209,5 +1209,14 @@
     ],
     "updatedAt": "2026-08-28",
     "effort": "solid"
+  },
+  "5:f2": {
+    "sets": [
+      {
+        "weight": 65,
+        "reps": 10
+      }
+    ],
+    "updatedAt": "2026-08-28"
   }
 }
