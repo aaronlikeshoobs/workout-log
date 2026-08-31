@@ -1309,5 +1309,14 @@
     ],
     "updatedAt": "2026-08-31",
     "effort": "grinding"
+  },
+  "6:m3": {
+    "sets": [
+      {
+        "weight": 120,
+        "reps": 8
+      }
+    ],
+    "updatedAt": "2026-08-31"
   }
 }
