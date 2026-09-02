@@ -1357,8 +1357,13 @@
       {
         "weight": 80,
         "reps": 18
+      },
+      {
+        "weight": 80,
+        "reps": 18
       }
     ],
-    "updatedAt": "2026-09-02"
+    "updatedAt": "2026-09-02",
+    "effort": "grinding"
   }
 }
