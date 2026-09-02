@@ -1401,5 +1401,14 @@
     ],
     "updatedAt": "2026-09-02",
     "effort": "grinding"
+  },
+  "6:w4": {
+    "sets": [
+      {
+        "weight": 133,
+        "reps": 45
+      }
+    ],
+    "updatedAt": "2026-09-02"
   }
 }
