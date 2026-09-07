@@ -1526,5 +1526,14 @@
     ],
     "updatedAt": "2026-09-07",
     "effort": "easy"
+  },
+  "7:m2": {
+    "sets": [
+      {
+        "weight": "100",
+        "reps": 8
+      }
+    ],
+    "updatedAt": "2026-09-07"
   }
 }
