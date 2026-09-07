@@ -267,9 +267,14 @@ function WorkoutTracker() {
     mutateLog(exId, (cur) => ({ ...cur, sets: [...(cur.sets || []), { weight: Number(weight) || 0, reps: Number(reps) || 0 }], updatedAt: todayStr() }));
   };
   const updateSet = (exId, idx, field, value) => {
+    // Keep the raw string while typing — coercing to Number() on every keystroke was
+    // stripping a trailing "." (e.g. typing "135." -> Number() -> 135 -> re-renders as
+    // "135", so the next digit typed becomes "1355" instead of "135.5"). Everywhere this
+    // value is used for math already does Number(weight)||0 defensively, so storing the
+    // in-progress string here is safe.
     mutateLog(exId, (cur) => {
       const sets = [...(cur.sets || [])];
-      sets[idx] = { ...sets[idx], [field]: value === "" ? "" : Number(value) || 0 };
+      sets[idx] = { ...sets[idx], [field]: value };
       return { ...cur, sets };
     });
   };
