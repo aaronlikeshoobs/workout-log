@@ -1562,5 +1562,9 @@
     ],
     "updatedAt": "2026-09-07",
     "effort": "easy"
+  },
+  "7:m4": {
+    "done": true,
+    "updatedAt": "2026-09-07"
   }
 }
