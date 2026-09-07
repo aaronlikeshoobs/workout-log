@@ -1508,5 +1508,14 @@
   "6:sa1": {
     "done": true,
     "note": ""
+  },
+  "7:m1": {
+    "sets": [
+      {
+        "weight": 0,
+        "reps": 6
+      }
+    ],
+    "updatedAt": "2026-09-07"
   }
 }
