@@ -314,7 +314,7 @@ function WorkoutTracker() {
     const sr = parseSetsReps(ex.target);
     const targetReps = sr ? sr.reps : 0;
     const suggestion = suggestionFor(ex.id);
-    const w = sets.length ? sets[sets.length - 1].weight : (suggestion ? suggestion.suggested : 0);
+    const w = sets.length ? sets[sets.length - 1].weight : (isDeloadWeek ? 0 : (suggestion ? suggestion.suggested : 0));
     const newIdx = sets.length;
     mutateLog(ex.id, (c) => ({ ...c, sets: [...(c.sets || []), { weight: w, reps: targetReps }], updatedAt: todayStr() }));
     if (!w) setEditingSet({ exId: ex.id, idx: newIdx });
@@ -437,6 +437,7 @@ function WorkoutTracker() {
 
   const weeks = Object.keys(PROGRAM).map(Number).sort((a, b) => a - b);
   const program = PROGRAM[week];
+  const isDeloadWeek = !!program.deload;
   const countable = (day) => day.exercises.filter((e) => categoryOf(e) !== "rest");
   const totalExercises = program.days.reduce((n, d) => n + countable(d).length, 0);
   const doneCount = program.days.reduce((n, d) => n + countable(d).filter((e) => isExerciseComplete(week, e)).length, 0);
@@ -538,7 +539,7 @@ function WorkoutTracker() {
             <span style={s.exTarget}>{ex.target}</span>
             {ex.goal && ex.goal !== "n/a" && ex.goal !== "bodyweight" && <span style={s.exGoal}>{ex.goal}</span>}
           </div>
-          {suggestion && (
+          {suggestion && !isDeloadWeek && (
             <div style={s.suggestionText}>suggested: {suggestion.suggested} lb <span style={s.suggestionSub}>({suggestion.reason})</span></div>
           )}
 
@@ -634,6 +635,7 @@ function WorkoutTracker() {
           <div style={{ width: 32 }} />
         </div>
         <div style={s.sessionDayTitle}>{sessDay.title} · {sessDay.focus}</div>
+        {isDeloadWeek && <div style={s.sessionDeloadTag}>🔽 Deload — go by the goal shown, not the suggestion</div>}
         <main style={{ ...s.main, paddingTop: 0 }}>
           <div style={s.dayCard}>
             <div style={{ padding: 16 }}>{renderExercise(ex)}</div>
@@ -685,6 +687,10 @@ function WorkoutTracker() {
 
         {saveState === "error" && (
           <div style={s.errorBanner}>⚠ {saveError || "Save failed"}. Retrying automatically — check your connection.</div>
+        )}
+
+        {isDeloadWeek && (
+          <div style={s.deloadBanner}>🔽 DELOAD WEEK — lighter weight, fewer sets, should feel easy. Follow the goal shown on each exercise, not the app's usual suggestion.</div>
         )}
 
         <div style={s.tabRow}>
@@ -829,6 +835,8 @@ const s = {
   h1: { fontSize: 27, fontWeight: 800, margin: 0, letterSpacing: "-0.02em" },
   savingDot: { display: "inline-block", width: 8, height: 8, borderRadius: "50%", background: "#8CA39A" },
   errorBanner: { background: "#3A1E1A", border: "1px solid #6B3A30", color: "#E8A090", fontSize: 11, padding: "10px 12px", borderRadius: 8, marginBottom: 12 },
+  deloadBanner: { background: "#2E2410", border: "1px solid #6B5A2E", color: "#F2C94C", fontSize: 12, padding: "10px 12px", borderRadius: 8, marginBottom: 12, fontWeight: 600 },
+  sessionDeloadTag: { textAlign: "center", fontSize: 11, color: "#F2C94C", fontFamily: "'IBM Plex Mono', monospace", marginBottom: 10, padding: "0 18px" },
   tabRow: { display: "flex", gap: 8, marginBottom: 14 },
   tabBtn: { flex: 1, background: "transparent", border: "1px solid #333F3A", color: "#8CA39A", borderRadius: 8, padding: "12px 8px", fontSize: 13, fontWeight: 600, cursor: "pointer", minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 },
   tabBtnActive: { background: "#1E2624", borderColor: "#4FD9AE", color: "#EAEFEC" },
