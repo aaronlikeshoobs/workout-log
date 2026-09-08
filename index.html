@@ -239,7 +239,11 @@ function WorkoutTracker() {
         const weeksArr = Object.keys(program).map(Number).sort((a, b) => a - b);
         const migrated = migrateLogs(data, program);
         setPROGRAM(program);
-        setWeek(weeksArr[weeksArr.length - 1]);
+        // Skip weeks that haven't started yet (startDate in the future) when picking the
+        // default view — otherwise a newly-added upcoming week becomes the default and
+        // it's easy to accidentally log today's session under the wrong week.
+        const activeWeeks = weeksArr.filter((w) => !program[w].startDate || program[w].startDate <= todayStr());
+        setWeek((activeWeeks.length ? activeWeeks : weeksArr)[activeWeeks.length ? activeWeeks.length - 1 : weeksArr.length - 1]);
         setLogs(migrated.data);
         logsRef.current = migrated.data;
         if (migrated.changed) saveNow(migrated.data);
@@ -706,9 +710,18 @@ function WorkoutTracker() {
         {view === "log" && (
           <React.Fragment>
             <div style={s.weekPicker}>
-              {weeks.map((w) => (
-                <button key={w} onClick={() => setWeek(w)} style={{ ...s.weekBtn, ...(w === week ? s.weekBtnActive : {}) }}>W{w}</button>
-              ))}
+              {weeks.map((w) => {
+                const notStarted = PROGRAM[w].startDate && PROGRAM[w].startDate > todayStr();
+                return (
+                  <button
+                    key={w}
+                    onClick={() => { if (!notStarted) setWeek(w); }}
+                    disabled={notStarted}
+                    title={notStarted ? `Starts ${PROGRAM[w].startDate}` : undefined}
+                    style={{ ...s.weekBtn, ...(w === week ? s.weekBtnActive : {}), ...(notStarted ? s.weekBtnDisabled : {}) }}
+                  >W{w}</button>
+                );
+              })}
             </div>
             <div style={s.progressRow}>
               <div style={s.progressBarTrack}><div style={{ ...s.progressBarFill, width: `${totalExercises ? (doneCount / totalExercises) * 100 : 0}%` }} /></div>
@@ -848,6 +861,7 @@ const s = {
   weekPicker: { display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" },
   weekBtn: { background: "transparent", border: "1px solid #333F3A", color: "#8CA39A", borderRadius: 8, padding: "10px 16px", fontSize: 13, fontFamily: "'IBM Plex Mono', monospace", cursor: "pointer", minHeight: 40 },
   weekBtnActive: { background: "#4FD9AE", borderColor: "#4FD9AE", color: "#0D1110", fontWeight: 700 },
+  weekBtnDisabled: { opacity: 0.35, cursor: "not-allowed" },
   progressRow: { display: "flex", alignItems: "center", gap: 10 },
   progressBarTrack: { flex: 1, height: 7, background: "#2A332F", borderRadius: 4, overflow: "hidden" },
   progressBarFill: { height: "100%", background: "#4FD9AE" },
