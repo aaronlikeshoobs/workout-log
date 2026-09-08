@@ -13,6 +13,7 @@
 <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script src="./program-utils.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { overscroll-behavior-y: contain; }
@@ -31,24 +32,10 @@
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useCallback, useRef } = React;
 
-const DAY_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-function todayName() { return DAY_ORDER[(new Date().getDay() + 6) % 7]; }
+const { DAY_ORDER, todayName, parseSetsReps, isWeightExercise, resolveActiveWeek } = window.ProgramUtils;
 function todayStr() {
   const d = new Date();
   return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
-}
-function isWeightExercise(ex) {
-  const t = (ex.target || "").toLowerCase();
-  const g = (ex.goal || "").toLowerCase();
-  if (g === "n/a" || g === "bodyweight") return false;
-  if (t.includes("min") || t.includes("as needed")) return false;
-  return true;
-}
-// Parses "4 x 6" -> {sets:4, reps:6}. Used to know how many sets an exercise targets.
-function parseSetsReps(target) {
-  const m = (target || "").match(/(\d+)\s*x\s*(\d+)/i);
-  if (!m) return null;
-  return { sets: parseInt(m[1], 10), reps: parseInt(m[2], 10) };
 }
 
 // ---- One-time migration: old {weight, done} shape -> new {sets:[...], effort, pain} shape ----
@@ -236,14 +223,12 @@ function WorkoutTracker() {
           }),
           ghGet(),
         ]);
-        const weeksArr = Object.keys(program).map(Number).sort((a, b) => a - b);
         const migrated = migrateLogs(data, program);
         setPROGRAM(program);
         // Skip weeks that haven't started yet (startDate in the future) when picking the
         // default view — otherwise a newly-added upcoming week becomes the default and
         // it's easy to accidentally log today's session under the wrong week.
-        const activeWeeks = weeksArr.filter((w) => !program[w].startDate || program[w].startDate <= todayStr());
-        setWeek((activeWeeks.length ? activeWeeks : weeksArr)[activeWeeks.length ? activeWeeks.length - 1 : weeksArr.length - 1]);
+        setWeek(resolveActiveWeek(program, todayStr()));
         setLogs(migrated.data);
         logsRef.current = migrated.data;
         if (migrated.changed) saveNow(migrated.data);
@@ -384,16 +369,7 @@ function WorkoutTracker() {
     return priorMax > 0 && currentTop > priorMax;
   };
 
-  const isExerciseComplete = (w, ex) => {
-    const log = logs[`${w}:${ex.id}`];
-    if (!log) return false;
-    if (isWeightExercise(ex)) {
-      const sr = parseSetsReps(ex.target);
-      const target = sr ? sr.sets : 1;
-      return (log.sets || []).length >= target;
-    }
-    return !!log.done;
-  };
+  const isExerciseComplete = (w, ex) => window.ProgramUtils.isExerciseComplete(logs[`${w}:${ex.id}`], ex);
 
   const [listeningId, setListeningId] = useState(null);
 
