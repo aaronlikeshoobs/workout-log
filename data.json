@@ -1608,5 +1608,14 @@
     "updatedAt": "2026-09-08",
     "note": "Light band",
     "effort": "easy"
+  },
+  "8:t4": {
+    "sets": [
+      {
+        "weight": 65,
+        "reps": 15
+      }
+    ],
+    "updatedAt": "2026-09-08"
   }
 }
