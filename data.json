@@ -1589,5 +1589,14 @@
     "updatedAt": "2026-09-08",
     "note": "Blue band",
     "effort": "easy"
+  },
+  "8:t3": {
+    "sets": [
+      {
+        "weight": 2,
+        "reps": 12
+      }
+    ],
+    "updatedAt": "2026-09-08"
   }
 }
