@@ -1567,11 +1567,11 @@
     "done": true,
     "note": ""
   },
-  "8:t1": {
+  "7:t1": {
     "done": true,
     "updatedAt": "2026-09-08"
   },
-  "8:t2": {
+  "7:t2": {
     "sets": [
       {
         "weight": 2,
@@ -1590,7 +1590,7 @@
     "note": "Blue band",
     "effort": "easy"
   },
-  "8:t3": {
+  "7:t3": {
     "sets": [
       {
         "weight": "3",
@@ -1609,7 +1609,7 @@
     "note": "Light band",
     "effort": "easy"
   },
-  "8:t4": {
+  "7:t4": {
     "sets": [
       {
         "weight": 65,
