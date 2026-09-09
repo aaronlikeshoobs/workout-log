@@ -1684,10 +1684,11 @@
   "7:w4": {
     "sets": [
       {
-        "weight": 0,
+        "weight": "61.7",
         "reps": 30
       }
     ],
-    "updatedAt": "2026-09-09"
+    "updatedAt": "2026-09-09",
+    "effort": "easy"
   }
 }
