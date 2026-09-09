@@ -1680,5 +1680,14 @@
     ],
     "updatedAt": "2026-09-09",
     "effort": "solid"
+  },
+  "7:w4": {
+    "sets": [
+      {
+        "weight": 0,
+        "reps": 30
+      }
+    ],
+    "updatedAt": "2026-09-09"
   }
 }
