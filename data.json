@@ -1742,5 +1742,14 @@
     ],
     "updatedAt": "2026-09-11",
     "effort": "easy"
+  },
+  "7:f3": {
+    "sets": [
+      {
+        "weight": 0,
+        "reps": 4
+      }
+    ],
+    "updatedAt": "2026-09-11"
   }
 }
