@@ -1778,5 +1778,13 @@
     ],
     "updatedAt": "2026-09-11",
     "effort": "easy"
+  },
+  "7:sa1": {
+    "done": true,
+    "updatedAt": "2026-09-13"
+  },
+  "7:su1": {
+    "done": true,
+    "updatedAt": "2026-09-13"
   }
 }
