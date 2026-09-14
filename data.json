@@ -1846,10 +1846,11 @@
         "reps": 8
       },
       {
-        "weight": "130",
+        "weight": "115",
         "reps": 8
       }
     ],
-    "updatedAt": "2026-09-14"
+    "updatedAt": "2026-09-14",
+    "effort": "solid"
   }
 }
