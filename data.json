@@ -1879,5 +1879,14 @@
     "updatedAt": "2026-09-15",
     "effort": "solid",
     "note": "Blue band on 3rd set"
+  },
+  "8:t3": {
+    "sets": [
+      {
+        "weight": 4,
+        "reps": 12
+      }
+    ],
+    "updatedAt": "2026-09-15"
   }
 }
