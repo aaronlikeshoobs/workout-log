@@ -1978,5 +1978,14 @@
     ],
     "updatedAt": "2026-09-16",
     "effort": "grinding"
+  },
+  "8:w4": {
+    "sets": [
+      {
+        "weight": 66.7,
+        "reps": 45
+      }
+    ],
+    "updatedAt": "2026-09-16"
   }
 }
