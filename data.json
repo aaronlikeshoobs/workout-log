@@ -1996,5 +1996,13 @@
     ],
     "updatedAt": "2026-09-16",
     "effort": "grinding"
+  },
+  "8:th1": {
+    "done": true,
+    "updatedAt": "2026-09-18"
+  },
+  "8:th2": {
+    "done": true,
+    "updatedAt": "2026-09-18"
   }
 }
