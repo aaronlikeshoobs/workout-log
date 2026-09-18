@@ -2026,5 +2026,14 @@
     ],
     "updatedAt": "2026-09-18",
     "effort": "grinding"
+  },
+  "8:f2": {
+    "sets": [
+      {
+        "weight": 52.5,
+        "reps": 10
+      }
+    ],
+    "updatedAt": "2026-09-18"
   }
 }
