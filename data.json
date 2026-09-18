@@ -2063,5 +2063,14 @@
     "updatedAt": "2026-09-18",
     "note": "Blue band",
     "effort": "missed"
+  },
+  "8:f4": {
+    "sets": [
+      {
+        "weight": 16,
+        "reps": 10
+      }
+    ],
+    "updatedAt": "2026-09-18"
   }
 }
