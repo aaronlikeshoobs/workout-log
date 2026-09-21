@@ -2125,9 +2125,10 @@
       },
       {
         "weight": "160",
-        "reps": 8
+        "reps": "7"
       }
     ],
-    "updatedAt": "2026-09-21"
+    "updatedAt": "2026-09-21",
+    "effort": "missed"
   }
 }
