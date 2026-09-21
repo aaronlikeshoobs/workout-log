@@ -2112,5 +2112,14 @@
     "updatedAt": "2026-09-21",
     "note": "Only got half way down on top set",
     "effort": "missed"
+  },
+  "9:m2": {
+    "sets": [
+      {
+        "weight": 155,
+        "reps": 8
+      }
+    ],
+    "updatedAt": "2026-09-21"
   }
 }
