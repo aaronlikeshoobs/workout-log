@@ -2189,10 +2189,14 @@
       {
         "weight": 5,
         "reps": 12
+      },
+      {
+        "weight": 5,
+        "reps": 12
       }
     ],
     "updatedAt": "2026-09-22",
     "note": "Black band",
-    "effort": "solid"
+    "effort": "grinding"
   }
 }
