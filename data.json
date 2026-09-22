@@ -2198,5 +2198,14 @@
     "updatedAt": "2026-09-22",
     "note": "Black band",
     "effort": "grinding"
+  },
+  "9:t4": {
+    "sets": [
+      {
+        "weight": 75,
+        "reps": 15
+      }
+    ],
+    "updatedAt": "2026-09-22"
   }
 }
