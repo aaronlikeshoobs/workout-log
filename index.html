@@ -395,23 +395,64 @@ function WorkoutTracker() {
     recognition.start();
   };
 
-  const startTimer = (exId, seconds = 90) => {
-    if (timerIntervalsRef.current[exId]) clearInterval(timerIntervalsRef.current[exId]);
-    setRestTimers((prev) => ({ ...prev, [exId]: seconds }));
+  const TIMER_STORAGE_KEY = "workout-log:activeTimers"; // { [exId]: endTimeMs }
+
+  const loadStoredTimers = () => {
+    try { return JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY) || "{}"); } catch (e) { return {}; }
+  };
+  const saveStoredTimers = (obj) => {
+    try { localStorage.setItem(TIMER_STORAGE_KEY, JSON.stringify(obj)); } catch (e) {}
+  };
+
+  // Ticks against a stored wall-clock end time rather than counting down a plain number,
+  // so navigating away (to the Hub, another app, locking the phone) and coming back still
+  // shows the correct remaining time — the countdown was never really "running" while gone,
+  // but elapsed real time is always recoverable from the timestamp.
+  const runTimerTick = (exId, endTime) => {
     timerIntervalsRef.current[exId] = setInterval(() => {
-      setRestTimers((prev) => {
-        const cur = prev[exId];
-        if (cur === undefined || cur <= 1) {
-          clearInterval(timerIntervalsRef.current[exId]);
-          delete timerIntervalsRef.current[exId];
-          try { navigator.vibrate && navigator.vibrate(200); } catch (e) {}
-          const { [exId]: _, ...rest } = prev;
-          return rest;
-        }
-        return { ...prev, [exId]: cur - 1 };
-      });
+      const remaining = Math.ceil((endTime - Date.now()) / 1000);
+      if (remaining <= 0) {
+        clearInterval(timerIntervalsRef.current[exId]);
+        delete timerIntervalsRef.current[exId];
+        const stored = loadStoredTimers();
+        delete stored[exId];
+        saveStoredTimers(stored);
+        try { navigator.vibrate && navigator.vibrate(200); } catch (e) {}
+        setRestTimers((prev) => { const { [exId]: _, ...rest } = prev; return rest; });
+        return;
+      }
+      setRestTimers((prev) => ({ ...prev, [exId]: remaining }));
     }, 1000);
   };
+
+  const startTimer = (exId, seconds = 90) => {
+    if (timerIntervalsRef.current[exId]) clearInterval(timerIntervalsRef.current[exId]);
+    const endTime = Date.now() + seconds * 1000;
+    const stored = loadStoredTimers();
+    stored[exId] = endTime;
+    saveStoredTimers(stored);
+    setRestTimers((prev) => ({ ...prev, [exId]: seconds }));
+    runTimerTick(exId, endTime);
+  };
+
+  // Resume any timer that was still running when the page was last open — covers both a
+  // real navigation away-and-back and just backgrounding the browser.
+  useEffect(() => {
+    const stored = loadStoredTimers();
+    const now = Date.now();
+    let changed = false;
+    Object.keys(stored).forEach((exId) => {
+      const endTime = stored[exId];
+      if (endTime > now) {
+        setRestTimers((prev) => ({ ...prev, [exId]: Math.ceil((endTime - now) / 1000) }));
+        runTimerTick(exId, endTime);
+      } else {
+        delete stored[exId];
+        changed = true;
+      }
+    });
+    if (changed) saveStoredTimers(stored);
+  }, []);
 
   if (!loaded || !PROGRAM || week === null) {
     if (programError) {
