@@ -2179,5 +2179,14 @@
     "updatedAt": "2026-09-22",
     "effort": "solid",
     "note": "Blue band"
+  },
+  "9:t3": {
+    "sets": [
+      {
+        "weight": 5,
+        "reps": 12
+      }
+    ],
+    "updatedAt": "2026-09-22"
   }
 }
