@@ -2160,5 +2160,15 @@
   "9:t1": {
     "done": true,
     "updatedAt": "2026-09-22"
+  },
+  "9:t2": {
+    "sets": [
+      {
+        "weight": 3,
+        "reps": 15
+      }
+    ],
+    "updatedAt": "2026-09-22",
+    "effort": "solid"
   }
 }
