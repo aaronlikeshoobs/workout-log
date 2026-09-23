@@ -2261,5 +2261,14 @@
     ],
     "updatedAt": "2026-09-23",
     "effort": "solid"
+  },
+  "9:w3": {
+    "sets": [
+      {
+        "weight": 53,
+        "reps": 10
+      }
+    ],
+    "updatedAt": "2026-09-23"
   }
 }
