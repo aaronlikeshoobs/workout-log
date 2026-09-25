@@ -2346,5 +2346,14 @@
     "updatedAt": "2026-09-25",
     "effort": "grinding",
     "note": "Push press"
+  },
+  "9:f3": {
+    "sets": [
+      {
+        "weight": 2,
+        "reps": 8
+      }
+    ],
+    "updatedAt": "2026-09-25"
   }
 }
