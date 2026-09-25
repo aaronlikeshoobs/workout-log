@@ -2317,10 +2317,11 @@
         "reps": 6
       },
       {
-        "weight": "225",
+        "weight": "275",
         "reps": 6
       }
     ],
-    "updatedAt": "2026-09-25"
+    "updatedAt": "2026-09-25",
+    "effort": "grinding"
   }
 }
