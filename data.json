@@ -2337,8 +2337,13 @@
       {
         "weight": 80,
         "reps": 10
+      },
+      {
+        "weight": 80,
+        "reps": 10
       }
     ],
-    "updatedAt": "2026-09-25"
+    "updatedAt": "2026-09-25",
+    "effort": "grinding"
   }
 }
