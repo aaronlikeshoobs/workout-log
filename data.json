@@ -2297,5 +2297,13 @@
     ],
     "updatedAt": "2026-09-23",
     "effort": "grinding"
+  },
+  "9:th1": {
+    "done": true,
+    "updatedAt": "2026-09-25"
+  },
+  "9:th2": {
+    "done": true,
+    "updatedAt": "2026-09-25"
   }
 }
