@@ -2433,10 +2433,11 @@
         "reps": 8
       },
       {
-        "weight": "150",
+        "weight": "135",
         "reps": 8
       }
     ],
-    "updatedAt": "2026-09-28"
+    "updatedAt": "2026-09-28",
+    "effort": "solid"
   }
 }
