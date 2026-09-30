@@ -2492,5 +2492,14 @@
     "updatedAt": "2026-09-30",
     "effort": "solid",
     "note": "Traveling so different weights available"
+  },
+  "10:w2": {
+    "sets": [
+      {
+        "weight": 85,
+        "reps": 12
+      }
+    ],
+    "updatedAt": "2026-09-30"
   }
 }
