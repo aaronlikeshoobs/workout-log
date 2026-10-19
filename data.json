@@ -2568,5 +2568,14 @@
     "updatedAt": "2026-10-19",
     "effort": "solid",
     "note": "Slight right knee discomfort on last 2 reps at 155"
+  },
+  "11:m2": {
+    "sets": [
+      {
+        "weight": 155,
+        "reps": 8
+      }
+    ],
+    "updatedAt": "2026-10-19"
   }
 }
