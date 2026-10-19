@@ -2590,5 +2590,14 @@
     ],
     "updatedAt": "2026-10-19",
     "effort": "solid"
+  },
+  "11:m3": {
+    "sets": [
+      {
+        "weight": "60",
+        "reps": 8
+      }
+    ],
+    "updatedAt": "2026-10-19"
   }
 }
