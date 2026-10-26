@@ -2692,8 +2692,17 @@
       {
         "weight": "1",
         "reps": 45
+      },
+      {
+        "weight": "1",
+        "reps": 45
+      },
+      {
+        "weight": "1",
+        "reps": 45
       }
     ],
-    "updatedAt": "2026-10-26"
+    "updatedAt": "2026-10-26",
+    "effort": "solid"
   }
 }
