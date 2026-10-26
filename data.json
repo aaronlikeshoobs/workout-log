@@ -2686,5 +2686,14 @@
     ],
     "updatedAt": "2026-10-26",
     "effort": "solid"
+  },
+  "12:m4": {
+    "sets": [
+      {
+        "weight": 0,
+        "reps": 45
+      }
+    ],
+    "updatedAt": "2026-10-26"
   }
 }
