@@ -2219,6 +2219,13 @@
             "target": "3 x 15",
             "goal": "75",
             "category": "accessory"
+          },
+          {
+            "id": "w5",
+            "name": "KB HIIT Circuit",
+            "target": "5 rounds, 40s on / 20s off",
+            "goal": "n/a",
+            "category": "cardio"
           }
         ]
       },
