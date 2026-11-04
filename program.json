@@ -2219,13 +2219,6 @@
             "target": "3 x 15",
             "goal": "75",
             "category": "accessory"
-          },
-          {
-            "id": "w5",
-            "name": "KB HIIT Circuit",
-            "target": "5 rounds, 40s on / 20s off",
-            "goal": "n/a",
-            "category": "cardio"
           }
         ]
       },
@@ -2298,6 +2291,172 @@
           }
         ],
         "note": "Travel / rest. Next week restarts Monday with the squat day."
+      }
+    ]
+  },
+  "13": {
+    "label": "Week 13 \u2014 Back Home",
+    "startDate": "2026-11-02",
+    "days": [
+      {
+        "title": "Monday",
+        "focus": "Travel Home \u2014 Rest",
+        "note": "Back from DC. No training.",
+        "exercises": [
+          {
+            "id": "rt1",
+            "name": "Rest / Travel Day",
+            "target": "as needed",
+            "goal": "n/a",
+            "category": "rest"
+          }
+        ]
+      },
+      {
+        "title": "Tuesday",
+        "focus": "Rest / Light Movement",
+        "exercises": [
+          {
+            "id": "rt2",
+            "name": "Walk / Stretch / Rest as needed",
+            "target": "as needed",
+            "goal": "n/a",
+            "category": "rest"
+          }
+        ]
+      },
+      {
+        "title": "Wednesday",
+        "focus": "KB HIIT Circuit",
+        "note": "First session back. HIIT circuit this week in place of the KB conditioning day.",
+        "exercises": [
+          {
+            "id": "w5",
+            "name": "KB HIIT Circuit",
+            "target": "5 rounds, 40s on / 20s off",
+            "goal": "n/a",
+            "category": "cardio"
+          }
+        ]
+      },
+      {
+        "title": "Thursday",
+        "focus": "Full Body Strength \u2014 Squat Focus",
+        "note": "Squat day moved to Thursday after the DC trip. Top set goes 155 -> 160 since week 12 logged clean (no knee pain flagged) \u2014 full depth, 2 reps in reserve. If the right knee talks, log it and drop 10 lb. Bench and row +5 on the top sets.",
+        "exercises": [
+          {
+            "id": "m1",
+            "name": "Barbell Back Squat",
+            "target": "4 x 6",
+            "goal": "S1: 90 \u00b7 S2: 120 \u00b7 S3 (top): 160 \u00b7 S4: 145 \u2014 full depth",
+            "category": "main"
+          },
+          {
+            "id": "m2",
+            "name": "Bench Press",
+            "target": "4 x 8",
+            "goal": "S1: 75 \u00b7 S2: 110 \u00b7 S3 (top): 145 \u00b7 S4: 130 \u2014 clean 8s",
+            "category": "main"
+          },
+          {
+            "id": "m3",
+            "name": "Barbell Row",
+            "target": "4 x 8",
+            "goal": "S1: 65 \u00b7 S2: 95 \u00b7 S3 (top): 130 \u00b7 S4: 115",
+            "category": "main"
+          },
+          {
+            "id": "m4",
+            "name": "Plank",
+            "target": "3x50s",
+            "goal": "3x50s \u00b7 bodyweight",
+            "category": "accessory"
+          }
+        ]
+      },
+      {
+        "title": "Friday",
+        "focus": "Peloton Cardio + Knee Rehab",
+        "note": "Easy ride between the squat and hinge days.",
+        "exercises": [
+          {
+            "id": "t1",
+            "name": "Peloton Ride (moderate)",
+            "target": "30 min",
+            "goal": "n/a",
+            "category": "cardio"
+          },
+          {
+            "id": "t2",
+            "name": "Single-Leg Glute Bridge (light band)",
+            "target": "3 x 15/side",
+            "goal": "",
+            "category": "rehab"
+          },
+          {
+            "id": "t3",
+            "name": "Standing Lateral Band Walk",
+            "target": "3 x 12 steps/side",
+            "goal": "",
+            "category": "rehab"
+          },
+          {
+            "id": "t4",
+            "name": "Calf Raises",
+            "target": "3 x 15",
+            "goal": "75",
+            "category": "accessory"
+          }
+        ]
+      },
+      {
+        "title": "Saturday",
+        "focus": "Full Body Strength \u2014 Hinge Focus",
+        "note": "Hinge day moved to Saturday so there's a rehab/cardio day after squats. Deadlift is untested since September \u2014 keep 85% of 275, leave 2 reps in the tank, drop 10 lb if the first set grinds.",
+        "exercises": [
+          {
+            "id": "f1",
+            "name": "Deadlift",
+            "target": "4 x 6",
+            "goal": "S1: 135 \u00b7 S2: 195 \u00b7 S3 (top): 235 \u00b7 S4: 210",
+            "category": "main"
+          },
+          {
+            "id": "f2",
+            "name": "Dumbbell Shoulder Press",
+            "target": "3 x 10",
+            "goal": "65, strict, no leg drive",
+            "category": "main"
+          },
+          {
+            "id": "f3",
+            "name": "Pull-Ups (banded assist)",
+            "target": "3 x 8",
+            "goal": "same band \u2014 6 to 7 last set, close",
+            "category": "main"
+          },
+          {
+            "id": "f4",
+            "name": "Step-Ups (low box, hand weights)",
+            "target": "3 x 10/side",
+            "goal": "20",
+            "category": "accessory"
+          }
+        ]
+      },
+      {
+        "title": "Sunday",
+        "focus": "Light Movement",
+        "exercises": [
+          {
+            "id": "su1",
+            "name": "Walk / Stretch / Rest",
+            "target": "as needed",
+            "goal": "n/a",
+            "category": "rest"
+          }
+        ],
+        "note": "Rest. Next week restarts Monday with squats."
       }
     ]
   }
