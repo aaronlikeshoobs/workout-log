@@ -2724,10 +2724,11 @@
         "reps": 6
       },
       {
-        "weight": "160",
+        "weight": "145",
         "reps": 6
       }
     ],
-    "updatedAt": "2026-11-05"
+    "updatedAt": "2026-11-05",
+    "effort": "solid"
   }
 }
