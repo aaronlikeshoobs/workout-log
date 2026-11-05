@@ -2774,5 +2774,15 @@
     ],
     "updatedAt": "2026-11-05",
     "effort": "grinding"
+  },
+  "13:m4": {
+    "sets": [
+      {
+        "weight": 2,
+        "reps": 50
+      }
+    ],
+    "updatedAt": "2026-11-05",
+    "effort": "solid"
   }
 }
