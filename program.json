@@ -2535,37 +2535,16 @@
         ]
       },
       {
-        "title": "Wednesday",
-        "focus": "Kettlebell Conditioning",
-        "note": "KB loads hold at the Week 11 numbers. Nothing has been logged on this day since Sept 30, so there's no new data to progress from. Log it this week.",
+        "title": "KB HIIT Circuit",
+        "focus": "HIIT",
+        "note": "4 stations per round, 40s work / 20s rest: 1) KB Swings 35 lb, 2) KB Thrusters 26 lb, 3) Renegade Rows 26 lb (knees down if needed), 4) Farmer March 26 lb each hand. Rest 60s after each round. Legs are moderate since yesterday was a 165 squat day. Tap done when finished.",
         "exercises": [
           {
-            "id": "w1",
-            "name": "KB Swings",
-            "target": "5 x 18",
-            "goal": "26 \u00b7 35 \u00b7 53 \u00b7 70 (top) \u00b7 53 back-off",
-            "category": "main"
-          },
-          {
-            "id": "w2",
-            "name": "Goblet Squat",
-            "target": "3 x 10",
-            "goal": "53 \u00b7 70 (top) \u00b7 53 back-off",
-            "category": "main"
-          },
-          {
-            "id": "w3",
-            "name": "KB Row",
-            "target": "3 x 10/side",
-            "goal": "35 \u00b7 45 (top) \u00b7 35 back-off",
-            "category": "main"
-          },
-          {
-            "id": "w4",
-            "name": "Farmer Carry",
-            "target": "3 x 45yd",
-            "goal": "88 \u00b7 88 \u00b7 110 (top)",
-            "category": "accessory"
+            "id": "w5",
+            "name": "KB HIIT Circuit",
+            "target": "5 rounds, 40s on / 20s off, 60s rest between rounds",
+            "goal": "n/a",
+            "category": "cardio"
           }
         ]
       },
