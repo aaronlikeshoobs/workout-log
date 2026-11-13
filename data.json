@@ -3013,5 +3013,14 @@
     ],
     "updatedAt": "2026-11-13",
     "effort": "solid"
+  },
+  "14:f3": {
+    "sets": [
+      {
+        "weight": 0,
+        "reps": 8
+      }
+    ],
+    "updatedAt": "2026-11-13"
   }
 }
