@@ -2973,6 +2973,13 @@
     "note": ""
   },
   "14:f1": {
-    "note": "Kettlebell swap for rain. 35 x 6. 53 x 6 "
+    "note": "Kettlebell swap for rain. 35 x 6. 53 x 6 x 3",
+    "sets": [
+      {
+        "weight": 240,
+        "reps": 6
+      }
+    ],
+    "updatedAt": "2026-11-13"
   }
 }
