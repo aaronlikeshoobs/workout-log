@@ -2976,7 +2976,7 @@
     "note": "Kettlebell swap for rain. 35 x 6. 53 x 6 x 3",
     "sets": [
       {
-        "weight": 240,
+        "weight": "35",
         "reps": 6
       }
     ],
