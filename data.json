@@ -2996,10 +2996,14 @@
     "effort": "easy"
   },
   "14:f2": {
-    "note": "Kettlebell single arm. 26.5 x 10 / side. 35.2 x 10 / side (push press). ",
+    "note": "Kettlebell single arm. 26.5 x 10 / side. 35.2 x 10 / side (push press). 35.2 x 10 / side",
     "sets": [
       {
         "weight": "53",
+        "reps": 10
+      },
+      {
+        "weight": "70.4",
         "reps": 10
       },
       {
