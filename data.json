@@ -2996,6 +2996,13 @@
     "effort": "easy"
   },
   "14:f2": {
-    "note": "Kettlebell single arm. 26.5 x 10 / side. "
+    "note": "Kettlebell single arm. 26.5 x 10 / side. ",
+    "sets": [
+      {
+        "weight": 60,
+        "reps": 10
+      }
+    ],
+    "updatedAt": "2026-11-13"
   }
 }
