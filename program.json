@@ -2741,15 +2741,15 @@
         "note": "Thanksgiving. Yoga/mobility and a walk or easy hike before the meal count. Keep it easy."
       },
       {
-        "title": "Friday",
-        "focus": "Full Body Strength \u2014 Hinge Focus",
-        "note": "Hinge day. Last week's was swapped to kettlebells, so the barbell deadlift hasn't been done since the 235 x 6 top set. Top set 245 as planned; if the first working set feels heavy, drop to 235. Shoulder press 65 combined (both dumbbells). Pull-ups: same blue band, last time 8/8/5 grinding, so aim for 8/7/6. Step-ups 25.",
+        "title": "Full Body \u2014 Light (post-Thanksgiving)",
+        "focus": "Light full body, no heavy hinge",
+        "note": "Day after Thanksgiving, so no barbell deadlift. Easy KB Romanian deadlift at 53 lb instead, 2+ reps in reserve, stop early if your stomach or back says so. Shoulder press 65 combined (both dumbbells), pull-ups with the same blue band (aim 8/7/6), step-ups 25. The 245 deadlift top set carries to next week.",
         "exercises": [
           {
-            "id": "f1",
-            "name": "Deadlift",
-            "target": "4 x 6",
-            "goal": "S1: 135 \u00b7 S2: 205 \u00b7 S3 (top): 245 \u00b7 S4: 220",
+            "id": "f5",
+            "name": "KB Romanian Deadlift",
+            "target": "3 x 10",
+            "goal": "53",
             "category": "main"
           },
           {
